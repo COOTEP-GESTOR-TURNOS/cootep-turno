@@ -5,14 +5,14 @@
 #   ./cootep-turno/scripts/agregar-submodulos.sh
 set -euo pipefail
 
-ORG="${ORG:-ECOTEP-GESTOR-TURNOS}"
+ORG="${ORG:-COOTEP-GESTOR-TURNOS}"
 cd "$(dirname "$0")/.."
 
 # ruta en apps/ : repositorio en GitHub
 REPOS=(
   "backend-principal:backend-principal"
   "motor-filas:backend-motor-filas"
-  "analitica:ecotep-fastAPI"
+  "analitica:cootep-fastAPI"
   "web:frontend"
   "movil:mobile"
 )
