@@ -29,7 +29,9 @@ for par in "${REPOS[@]}"; do
   [ -d .git ] || git init -b main
   git add -A
   git diff --cached --quiet || git commit -m "Esqueleto inicial de $repo"
-  git remote get-url origin > /dev/null 2>&1 || git remote add origin "https://github.com/$ORG/$repo.git"
+  url="https://github.com/$ORG/$repo.git"
+  # Si el remoto apunta a otra organización o a otro nombre, se corrige.
+  git remote get-url origin > /dev/null 2>&1 && git remote set-url origin "$url" || git remote add origin "$url"
   # Si el repositorio se creó con README o licencia, primero se une esa historia.
   if git ls-remote --exit-code --heads origin main > /dev/null 2>&1; then
     git pull --no-rebase --allow-unrelated-histories --no-edit origin main
