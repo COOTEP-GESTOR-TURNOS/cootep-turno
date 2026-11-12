@@ -6,14 +6,14 @@
 # Requiere git con sesión de GitHub (la primera vez Git abre el navegador para autorizar).
 set -euo pipefail
 
-ORG="${ORG:-ECOTEP-GESTOR-TURNOS}"
+ORG="${ORG:-COOTEP-GESTOR-TURNOS}"
 RAIZ="$(cd "$(dirname "$0")/../.." && pwd)"
 
 # carpeta local : repositorio en GitHub
 REPOS=(
   "backend-principal:backend-principal"
   "motor-filas:backend-motor-filas"
-  "analitica:ecotep-fastAPI"
+  "analitica:cootep-fastAPI"
   "web:frontend"
   "movil:mobile"
   "cootep-turno:cootep-turno"

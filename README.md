@@ -59,7 +59,7 @@ publican puertos: se alcanzan únicamente dentro de la red externa `cootep-net`.
 Requisitos: Docker Desktop con Compose v2, Git y unos 8 GB de RAM libres.
 
 ```bash
-git clone --recurse-submodules https://github.com/ECOTEP-GESTOR-TURNOS/cootep-turno.git
+git clone --recurse-submodules https://github.com/COOTEP-GESTOR-TURNOS/cootep-turno.git
 cd cootep-turno
 cp infra/.env.example infra/.env        # y cambie TODAS las contraseñas
 docker network create cootep-net
