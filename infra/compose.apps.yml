@@ -1,0 +1,108 @@
+# Tres backends y la web de COOTEP Turno.
+# Requiere la red externa y los motores ya levantados:
+#   docker compose -f infra/compose.apps.yml up -d --build --wait
+# Solo se publican el backend principal (3000, para la APK) y la web (8080).
+
+name: cootep-apps
+
+services:
+  backend-principal:
+    build:
+      context: ${RUTA_BACKEND_PRINCIPAL:-../apps/backend-principal}
+    image: cootep/backend-principal:1.0.0
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      DATABASE_URL: postgres://cootep:${POSTGRES_PASSWORD}@postgres:5432/cootep
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      MONGO_URL: mongodb://cootep_app:${MONGO_APP_PASSWORD}@mongo:27017/cootep?authSource=cootep
+      MONGO_DB: cootep
+      CASSANDRA_CONTACT_POINTS: cassandra
+      CASSANDRA_DATACENTER: datacenter1
+      MOTOR_FILAS_URL: http://motor-filas:8080
+      ANALITICA_URL: http://analitica:8000
+      SERVICE_TOKEN: ${SERVICE_TOKEN:?Defina SERVICE_TOKEN en infra/.env}
+      JWT_SECRETO: ${JWT_SECRETO:?Defina JWT_SECRETO en infra/.env}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID:-}
+      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET:-}
+      MICROSOFT_TENANT: ${MICROSOFT_TENANT:-common}
+      OIDC_URL_BASE: ${OIDC_URL_BASE:-http://localhost:8080}
+      SUPERADMIN_EMAIL: ${SUPERADMIN_EMAIL:-}
+      SUPERADMIN_PASSWORD_TEMPORAL: ${SUPERADMIN_PASSWORD_TEMPORAL:-}
+    ports:
+      - "3000:3000"
+    depends_on:
+      motor-filas:
+        condition: service_healthy
+      analitica:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/v1/salud"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks: [cootep-net]
+    restart: unless-stopped
+
+  motor-filas:
+    build:
+      context: ${RUTA_MOTOR_FILAS:-../apps/motor-filas}
+    image: cootep/motor-filas:1.0.0
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      SERVICE_TOKEN: ${SERVICE_TOKEN}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks: [cootep-net]
+    restart: unless-stopped
+
+  analitica:
+    build:
+      context: ${RUTA_ANALITICA:-../apps/analitica}
+    image: cootep/analitica:1.0.0
+    environment:
+      MONGO_URL: mongodb://cootep_app:${MONGO_APP_PASSWORD}@mongo:27017/cootep?authSource=cootep
+      MONGO_DB: cootep
+      CLICKHOUSE_URL: http://clickhouse:8123
+      CLICKHOUSE_USER: cootep
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+      SERVICE_TOKEN: ${SERVICE_TOKEN}
+      PROCESOS_ESTADISTICAS: "4"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/salud', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    networks: [cootep-net]
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ${RUTA_WEB:-../apps/web}
+    image: cootep/web:1.0.0
+    ports:
+      - "8080:8080"
+    depends_on:
+      backend-principal:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    networks: [cootep-net]
+    restart: unless-stopped
+
+networks:
+  cootep-net:
+    external: true

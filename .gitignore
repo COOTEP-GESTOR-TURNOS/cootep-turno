@@ -1,0 +1,13 @@
+# Secretos: solo se versiona infra/.env.example
+infra/.env
+.env
+
+# Paquetes de entrega generados
+*.zip
+entrega/
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

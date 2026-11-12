@@ -1,0 +1,16 @@
+stateDiagram-v2
+    [*] --> SOLICITADO
+    SOLICITADO --> EN_ESPERA: encolado
+    EN_ESPERA --> PROXIMO: N_PROXIMO o menos delante
+    PROXIMO --> LLAMADO: llamar siguiente
+    LLAMADO --> EN_ATENCION: iniciar
+    EN_ATENCION --> ATENDIDO: finalizar
+    LLAMADO --> EN_ESPERA: preferencial no verificado
+    SOLICITADO --> CANCELADO: asociado o cierre
+    EN_ESPERA --> CANCELADO: asociado o cierre
+    PROXIMO --> CANCELADO: asociado o cierre
+    PROXIMO --> AUSENTE: no confirma en T_CONFIRMACION
+    LLAMADO --> AUSENTE: no se presenta en T_LLAMADO
+    ATENDIDO --> [*]
+    CANCELADO --> [*]
+    AUSENTE --> [*]

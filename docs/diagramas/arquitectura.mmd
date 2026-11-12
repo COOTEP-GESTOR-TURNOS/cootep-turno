@@ -1,0 +1,27 @@
+flowchart LR
+  subgraph Clientes
+    NAV[Navegador web]
+    APK[App móvil APK]
+  end
+  OIDC[Google y Microsoft · OIDC]
+  subgraph apps[compose.apps.yml]
+    NGINX[web · nginx]
+    BP[backend-principal · NestJS hexagonal]
+    MF[motor-filas · Spring Boot MVC]
+    AN[analitica · FastAPI MVC]
+  end
+  subgraph datos[compose.datos.yml]
+    PG[(PostgreSQL)]
+    RD[(Redis)]
+    MG[(MongoDB)]
+    CS[(Cassandra)]
+    CH[(ClickHouse)]
+  end
+  NAV --> NGINX --> BP
+  APK --> BP
+  BP <--> OIDC
+  BP --> MF
+  BP --> AN
+  BP --- PG & RD & MG & CS
+  MF --- RD
+  AN --- MG & CH
