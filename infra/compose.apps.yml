@@ -1,7 +1,7 @@
 # Tres backends y la web de COOTEP Turno.
 # Requiere la red externa y los motores ya levantados:
 #   docker compose -f infra/compose.apps.yml up -d --build --wait
-# Solo se publican el backend principal (3000, para la APK) y la web (8080).
+# Se publican el backend principal (3000, para la APK), la web (8080) y el buzón de correo de pruebas (8025).
 
 name: cootep-apps
 
@@ -23,17 +23,26 @@ services:
       ANALITICA_URL: http://analitica:8000
       SERVICE_TOKEN: ${SERVICE_TOKEN:?Defina SERVICE_TOKEN en infra/.env}
       JWT_SECRETO: ${JWT_SECRETO:?Defina JWT_SECRETO en infra/.env}
+      CLAVE_CIFRADO_MFA: ${CLAVE_CIFRADO_MFA:?Defina CLAVE_CIFRADO_MFA en infra/.env}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
-      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID:-}
-      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET:-}
-      MICROSOFT_TENANT: ${MICROSOFT_TENANT:-common}
-      OIDC_URL_BASE: ${OIDC_URL_BASE:-http://localhost:8080}
+      # Dirección pública de la web: arma el retorno de Google y los enlaces de los correos.
+      URL_PUBLICA: ${URL_PUBLICA:-http://localhost:8080}
+      # La cookie de sesión exige HTTPS salvo en localhost; false solo para probar por IP de la red.
+      COOKIE_SEGURA: ${COOKIE_SEGURA:-true}
+      SMTP_HOST: ${SMTP_HOST:-correo}
+      SMTP_PUERTO: ${SMTP_PUERTO:-1025}
+      SMTP_SEGURO: ${SMTP_SEGURO:-false}
+      SMTP_USUARIO: ${SMTP_USUARIO:-}
+      SMTP_CLAVE: ${SMTP_CLAVE:-}
+      CORREO_REMITENTE: ${CORREO_REMITENTE:-COOTEP Turno <no-responder@cootep-turno.test>}
       SUPERADMIN_EMAIL: ${SUPERADMIN_EMAIL:-}
       SUPERADMIN_PASSWORD_TEMPORAL: ${SUPERADMIN_PASSWORD_TEMPORAL:-}
     ports:
       - "3000:3000"
     depends_on:
+      correo:
+        condition: service_started
       motor-filas:
         condition: service_healthy
       analitica:
@@ -101,6 +110,18 @@ services:
       interval: 10s
       timeout: 5s
       retries: 6
+    networks: [cootep-net]
+    restart: unless-stopped
+
+  # Buzón de pruebas: recibe los correos de recuperación y activación sin enviarlos a internet.
+  # Bandeja en http://localhost:8025. Para correo real, cambie SMTP_* en infra/.env.
+  correo:
+    image: axllent/mailpit:v1.32.0
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+    ports:
+      - "8025:8025"
     networks: [cootep-net]
     restart: unless-stopped
 

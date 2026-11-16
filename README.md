@@ -76,6 +76,28 @@ Cassandra tarda 1 a 2 minutos) y al final las aplicaciones.
 | Web | <http://localhost:8080> |
 | API del backend principal | <http://localhost:3000/api/v1> |
 | OpenAPI del backend principal | <http://localhost:3000/api/docs> |
+| Buzón de correo de pruebas (Mailpit) | <http://localhost:8025> |
+
+### Primer ingreso y cuentas
+
+1. Ingrese en la web con `SUPERADMIN_EMAIL` y `SUPERADMIN_PASSWORD_TEMPORAL`. El sistema pide
+   cambiar la clave y activar la verificación en dos pasos (escanee el QR con Google Authenticator).
+2. En **Administración**, cree el directivo de cada agencia (rol administrador de agencia). Le llega
+   un correo (en Mailpit) para definir su clave; en su primer ingreso también activa MFA.
+3. El directivo da de alta a los funcionarios de su agencia y les asigna su servicio.
+4. Los asociados se registran solos en **Crea tu cuenta** o entran con Google.
+
+Los correos de activación, confirmación y recuperación llegan a Mailpit. Para enviarlos de verdad
+(por ejemplo con Gmail y una contraseña de aplicación) cambie `SMTP_*` en `infra/.env`.
+
+### Migraciones de PostgreSQL
+
+Los scripts de `infra/init/postgres` corren solos cuando el volumen está vacío. Si su volumen ya
+existía, aplique los nuevos a mano (son idempotentes). En Git Bash anteponga `MSYS_NO_PATHCONV=1`:
+
+```bash
+MSYS_NO_PATHCONV=1 docker compose -f infra/compose.datos.yml exec -T postgres psql -U cootep -d cootep -f /docker-entrypoint-initdb.d/03-identidad.sql
+```
 
 Si clonó los repositorios como carpetas hermanas (sin submódulos), ajuste las variables
 `RUTA_*` de `infra/.env` (por ejemplo `RUTA_BACKEND_PRINCIPAL=../../backend-principal`).
@@ -105,6 +127,28 @@ Los comandos se ejecutan con `docker compose -f infra/compose.datos.yml exec <se
 | ClickHouse | No hace falta: es derivado | `POST /api/v1/etl/ejecutar?completa=true` en la analítica |
 
 `docker compose down` conserva los volúmenes; `docker compose down -v` los borra.
+
+## Trabajo en equipo con ramas
+
+`main` siempre debe compilar y pasar las pruebas: nadie trabaja directo sobre ella. Cada
+funcionalidad va en su rama, con el **mismo nombre en todos los repositorios que toca**, y entra a
+`main` con un pull request que revisa otro integrante.
+
+| Rama | Contenido | Repositorios |
+| --- | --- | --- |
+| `feature/identidad` | Inicio local y con Google, MFA, registro, recuperación por correo, administración de usuarios y roles | backend-principal, frontend, mobile, cootep-turno |
+| `feature/administracion-agencias` | Servicios, ventanillas, horario y parámetros por agencia; auditoría para el superadministrador | backend-principal, frontend, mobile |
+| `feature/turnos-catalogo` | Catálogo real (`GET /agencias`) en los paneles de turno; cierre de agencia y vencimientos | backend-principal, backend-motor-filas, frontend, mobile |
+| `feature/analitica-tablero` | Indicadores y franjas recomendadas en la web y el móvil | cootep-fastAPI, frontend, mobile |
+
+```bash
+git switch main && git pull
+git switch -c feature/<nombre>          # en cada repositorio que vaya a tocar
+git push -u origin feature/<nombre>
+```
+
+Mensajes de commit en español y en presente («Agrega…», «Corrige…»). Cuando las ramas de una
+funcionalidad se fusionan en `main`, se actualizan los submódulos de este repositorio.
 
 ## Trabajo con submódulos
 
