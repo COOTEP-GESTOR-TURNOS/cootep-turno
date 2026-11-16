@@ -39,7 +39,8 @@ services:
       analitica:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/v1/salud"]
+      # 127.0.0.1 y no localhost: en Alpine localhost resuelve primero a IPv6 (::1).
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/v1/salud"]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -57,7 +58,7 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       SERVICE_TOKEN: ${SERVICE_TOKEN}
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -78,7 +79,7 @@ services:
       SERVICE_TOKEN: ${SERVICE_TOKEN}
       PROCESOS_ESTADISTICAS: "4"
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/salud', timeout=3)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/salud', timeout=3)"]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -96,7 +97,7 @@ services:
       backend-principal:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/"]
       interval: 10s
       timeout: 5s
       retries: 6
