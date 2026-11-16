@@ -68,6 +68,13 @@ docker compose -f infra/compose.apps.yml up -d --build --wait
 docker compose -f infra/compose.apps.yml exec backend-principal node dist/cli/crear-superadmin.js
 ```
 
+Si Docker responde `ports are not available ... forbidden by its access permissions`, Windows
+reservó ese puerto (pasa con 8080 y 8025 después de algunos reinicios). Hay dos salidas:
+
+- Liberarlo: en una terminal de administrador, `net stop winnat` y luego `net start winnat`.
+- Usar otro puerto: `PUERTO_WEB`, `PUERTO_CORREO` y `PUERTO_BACKEND` en `infra/.env`. Si cambia el de
+  la web, ajuste `URL_PUBLICA` y agregue el nuevo URI de redireccionamiento en Google.
+
 El orden importa: primero la red, luego los datos (el `--wait` espera sus healthchecks;
 Cassandra tarda 1 a 2 minutos) y al final las aplicaciones.
 

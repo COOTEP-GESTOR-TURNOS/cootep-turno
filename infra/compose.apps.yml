@@ -39,7 +39,7 @@ services:
       SUPERADMIN_EMAIL: ${SUPERADMIN_EMAIL:-}
       SUPERADMIN_PASSWORD_TEMPORAL: ${SUPERADMIN_PASSWORD_TEMPORAL:-}
     ports:
-      - "3000:3000"
+      - "${PUERTO_BACKEND:-3000}:3000"
     depends_on:
       correo:
         condition: service_started
@@ -101,7 +101,7 @@ services:
       context: ${RUTA_WEB:-../apps/web}
     image: cootep/web:1.0.0
     ports:
-      - "8080:8080"
+      - "${PUERTO_WEB:-8080}:8080"
     depends_on:
       backend-principal:
         condition: service_healthy
@@ -121,7 +121,7 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: "1"
       MP_SMTP_AUTH_ALLOW_INSECURE: "1"
     ports:
-      - "8025:8025"
+      - "${PUERTO_CORREO:-8025}:8025"
     networks: [cootep-net]
     restart: unless-stopped
 
