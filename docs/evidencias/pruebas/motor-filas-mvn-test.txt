@@ -1,0 +1,137 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< co.cootep:motor-filas >------------------------
+[INFO] Building motor-filas 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ motor-filas ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ motor-filas ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ motor-filas ---
+[INFO] skip non existing resourceDirectory /app/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ motor-filas ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ motor-filas ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running co.cootep.motorfilas.MotorFilasApplicationTest
+05:46:20.779 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [co.cootep.motorfilas.MotorFilasApplicationTest]: MotorFilasApplicationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+05:46:22.641 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration co.cootep.motorfilas.MotorFilasApplication for test class co.cootep.motorfilas.MotorFilasApplicationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.0)
+
+2026-11-17T05:46:29.851Z  INFO 71 --- [motor-filas] [           main] c.c.m.MotorFilasApplicationTest          : Starting MotorFilasApplicationTest using Java 21.0.7 with PID 71 (started by root in /app)
+2026-11-17T05:46:29.858Z  INFO 71 --- [motor-filas] [           main] c.c.m.MotorFilasApplicationTest          : No active profile set, falling back to 1 default profile: "default"
+2026-11-17T05:46:37.743Z  INFO 71 --- [motor-filas] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-17T05:46:37.754Z  INFO 71 --- [motor-filas] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-17T05:46:37.953Z  INFO 71 --- [motor-filas] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 149 ms. Found 0 Redis repository interfaces.
+2026-11-17T05:46:44.155Z  INFO 71 --- [motor-filas] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-11-17T05:46:44.254Z  INFO 71 --- [motor-filas] [           main] c.c.m.MotorFilasApplicationTest          : Started MotorFilasApplicationTest in 19.823 seconds (process running for 32.73)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.17.5/byte-buddy-agent-1.17.5.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 28.23 s -- in co.cootep.motorfilas.MotorFilasApplicationTest
+[INFO] Running co.cootep.motorfilas.service.CalculoPosicionTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.039 s -- in co.cootep.motorfilas.service.CalculoPosicionTest
+2026-11-17T05:46:47.524Z  INFO 71 --- [motor-filas] [           main] org.testcontainers.DockerClientFactory   : Testcontainers version: 1.21.4
+2026-11-17T05:46:52.078Z  INFO 71 --- [motor-filas] [           main] o.t.d.DockerClientProviderStrategy       : Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+2026-11-17T05:46:52.810Z  INFO 71 --- [motor-filas] [           main] org.testcontainers.DockerClientFactory   : Docker host IP address is host.docker.internal
+2026-11-17T05:46:52.863Z  INFO 71 --- [motor-filas] [           main] org.testcontainers.DockerClientFactory   : Connected to docker: 
+  Server Version: 29.4.2
+  API Version: 1.54
+  Operating System: Docker Desktop
+  Total Memory: 11777 MB
+  Labels: 
+    com.docker.desktop.address=npipe://\\.\pipe\docker_cli
+2026-11-17T05:46:52.947Z  INFO 71 --- [motor-filas] [           main] org.testcontainers.images.PullPolicy     : Image pull policy will be performed by: DefaultPullPolicy()
+2026-11-17T05:46:52.966Z  INFO 71 --- [motor-filas] [           main] o.t.utility.ImageNameSubstitutor         : Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2026-11-17T05:46:53.207Z  INFO 71 --- [motor-filas] [           main] tc.testcontainers/ryuk:0.12.0            : Creating container for image: testcontainers/ryuk:0.12.0
+2026-11-17T05:46:53.241Z  INFO 71 --- [motor-filas] [           main] o.t.utility.RegistryAuthLocator          : Failure when attempting to lookup auth config. Please ignore if you don't have images in an authenticated registry. Details: (dockerImageName: testcontainers/ryuk:0.12.0, configFile: /root/.docker/config.json, configEnv: DOCKER_AUTH_CONFIG). Falling back to docker-java default behaviour. Exception message: Status 404: No config supplied. Checked in order: /root/.docker/config.json (file not found), DOCKER_AUTH_CONFIG (not set)
+2026-11-17T05:47:10.371Z  INFO 71 --- [motor-filas] [           main] tc.testcontainers/ryuk:0.12.0            : Container testcontainers/ryuk:0.12.0 is starting: 642505257a88be3dd5207a37d61c4e3efb4796970049fa4add63861213f94ecc
+2026-11-17T05:47:12.416Z  INFO 71 --- [motor-filas] [           main] tc.testcontainers/ryuk:0.12.0            : Container testcontainers/ryuk:0.12.0 started in PT19.209019475S
+2026-11-17T05:47:12.434Z  INFO 71 --- [motor-filas] [           main] o.t.utility.RyukResourceReaper           : Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2026-11-17T05:47:12.434Z  INFO 71 --- [motor-filas] [           main] org.testcontainers.DockerClientFactory   : Checking the system...
+2026-11-17T05:47:12.438Z  INFO 71 --- [motor-filas] [           main] org.testcontainers.DockerClientFactory   : ✔︎ Docker server version should be at least 1.6.0
+[INFO] Running co.cootep.motorfilas.service.FilaConcurrenciaTest
+2026-11-17T05:47:12.460Z  INFO 71 --- [motor-filas] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.cootep.motorfilas.service.FilaConcurrenciaTest]: FilaConcurrenciaTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-17T05:47:12.793Z  INFO 71 --- [motor-filas] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.cootep.motorfilas.MotorFilasApplication for test class co.cootep.motorfilas.service.FilaConcurrenciaTest
+2026-11-17T05:47:12.808Z  INFO 71 --- [motor-filas] [           main] tc.redis:7.4.1-alpine                    : Creating container for image: redis:7.4.1-alpine
+2026-11-17T05:47:13.451Z  INFO 71 --- [motor-filas] [           main] tc.redis:7.4.1-alpine                    : Container redis:7.4.1-alpine is starting: d6e0660403a7efef9b6fb0a64891c80283b38bed4d740c1cfa25e2c031c3ef97
+2026-11-17T05:47:14.738Z  INFO 71 --- [motor-filas] [           main] tc.redis:7.4.1-alpine                    : Container redis:7.4.1-alpine started in PT1.929395796S
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.0)
+
+2026-11-17T05:47:14.984Z  INFO 71 --- [motor-filas] [           main] c.c.m.service.FilaConcurrenciaTest       : Starting FilaConcurrenciaTest using Java 21.0.7 with PID 71 (started by root in /app)
+2026-11-17T05:47:14.985Z  INFO 71 --- [motor-filas] [           main] c.c.m.service.FilaConcurrenciaTest       : No active profile set, falling back to 1 default profile: "default"
+2026-11-17T05:47:17.955Z  INFO 71 --- [motor-filas] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-17T05:47:17.955Z  INFO 71 --- [motor-filas] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-17T05:47:18.111Z  INFO 71 --- [motor-filas] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 149 ms. Found 0 Redis repository interfaces.
+2026-11-17T05:47:18.624Z  INFO 71 --- [motor-filas] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-11-17T05:47:18.636Z  INFO 71 --- [motor-filas] [           main] c.c.m.service.FilaConcurrenciaTest       : Started FilaConcurrenciaTest in 3.878 seconds (process running for 67.113)
+200 encolamientos concurrentes en 5306 ms
+2026-11-17T05:47:31.402Z  INFO 71 --- [motor-filas] [xecutorLoop-4-1] i.l.core.protocol.ConnectionWatchdog     : Reconnecting, last destination was host.docker.internal/192.168.65.254:19016
+2026-11-17T05:47:31.421Z  WARN 71 --- [motor-filas] [ioEventLoop-6-2] i.l.core.protocol.ConnectionWatchdog     : Cannot reconnect to [host.docker.internal/<unresolved>:19016]: Connection closed prematurely
+
+io.lettuce.core.RedisConnectionException: Connection closed prematurely
+	at io.lettuce.core.protocol.RedisHandshakeHandler.channelInactive(RedisHandshakeHandler.java:76) ~[lettuce-core-6.5.5.RELEASE.jar:6.5.5.RELEASE/cb02888]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:303) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:281) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:274) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.ChannelInboundHandlerAdapter.channelInactive(ChannelInboundHandlerAdapter.java:81) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.lettuce.core.ChannelGroupListener.channelInactive(ChannelGroupListener.java:54) ~[lettuce-core-6.5.5.RELEASE.jar:6.5.5.RELEASE/cb02888]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:303) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:281) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:274) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelInactive(DefaultChannelPipeline.java:1352) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:301) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:281) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelInactive(DefaultChannelPipeline.java:850) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.AbstractChannel$AbstractUnsafe$7.run(AbstractChannel.java:811) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.util.concurrent.AbstractEventExecutor.runTask(AbstractEventExecutor.java:173) ~[netty-common-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:166) ~[netty-common-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:472) ~[netty-common-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:566) ~[netty-transport-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:998) ~[netty-common-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) ~[netty-common-4.1.121.Final.jar:4.1.121.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) ~[netty-common-4.1.121.Final.jar:4.1.121.Final]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.26 s -- in co.cootep.motorfilas.service.FilaConcurrenciaTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:33 min
+[INFO] Finished at: 2026-11-17T05:47:34Z
+[INFO] ------------------------------------------------------------------------

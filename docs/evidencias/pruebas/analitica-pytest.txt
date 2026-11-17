@@ -1,0 +1,30 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.0, pytest-8.3.4, pluggy-1.7.0 -- D:\ECOTEP\analitica\.venv\Scripts\python.exe
+rootdir: D:\ECOTEP\analitica
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.16.0
+collecting ... collected 14 items
+
+tests/test_api.py::test_salud_responde_sin_token PASSED                  [  7%]
+tests/test_api.py::test_sin_token_de_servicio_responde_401_en_formato_rfc_9457 PASSED [ 14%]
+tests/test_api.py::test_con_token_usa_el_servicio_y_devuelve_camel_case PASSED [ 21%]
+tests/test_estimacion.py::test_aplica_la_formula PASSED                  [ 28%]
+tests/test_estimacion.py::test_un_preferencial_no_espera_por_otros_preferenciales PASSED [ 35%]
+tests/test_estimacion.py::test_p_no_supera_k_sobre_k_mas_uno PASSED      [ 42%]
+tests/test_estimacion.py::test_sin_ventanillas_no_hay_estimacion PASSED  [ 50%]
+tests/test_hechos.py::test_turno_atendido_calcula_espera_y_atencion PASSED [ 57%]
+tests/test_hechos.py::test_turno_cancelado_no_tiene_atencion PASSED      [ 64%]
+tests/test_hechos.py::test_turno_sin_finalizar_se_ignora PASSED          [ 71%]
+tests/test_recomendacion.py::test_ordena_por_menor_espera_y_descarta_pocos_datos PASSED [ 78%]
+tests/test_recomendacion.py::test_si_es_hoy_no_recomienda_franjas_pasadas PASSED [ 85%]
+tests/test_recomendacion.py::test_el_servicio_consulta_por_dia_de_semana_y_tipo_de_dia PASSED [ 92%]
+tests/test_recomendacion.py::test_tipo_de_dia PASSED                     [100%]
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\starlette\testclient.py:40
+  D:\ECOTEP\analitica\.venv\Lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 14 passed, 1 warning in 0.94s ========================
