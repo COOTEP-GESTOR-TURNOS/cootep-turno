@@ -104,6 +104,7 @@ existía, aplique los nuevos a mano (son idempotentes). En Git Bash anteponga `M
 
 ```bash
 MSYS_NO_PATHCONV=1 docker compose -f infra/compose.datos.yml exec -T postgres psql -U cootep -d cootep -f /docker-entrypoint-initdb.d/03-identidad.sql
+MSYS_NO_PATHCONV=1 docker compose -f infra/compose.datos.yml exec -T postgres psql -U cootep -d cootep -f /docker-entrypoint-initdb.d/04-administracion.sql
 ```
 
 Si clonó los repositorios como carpetas hermanas (sin submódulos), ajuste las variables
