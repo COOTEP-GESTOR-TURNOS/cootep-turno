@@ -1,0 +1,46 @@
+# backend-principal · consulta de mi turno: secuencial contra en paralelo (17 de noviembre de 2026)
+# docker compose -f infra/compose.apps.yml exec -T backend-principal node dist/cli/medir-paralelismo.js <asociadoId> 100 10 <retardoMs> 10:00
+
+## corrida 1 · red de Docker
+Consulta de mi turno · 100 repeticiones por modo (10 de calentamiento) · retardo simulado 0 ms · franja 10:00
+Node v22.12.0 · 12 CPU
+ms                    mediana      p95   mínimo   máximo
+secuencial              16.57    21.94    13.82    25.08
+paralelo                12.23    15.49    10.32    23.49
+  llamada motor          4.78     6.34     3.84     8.21
+  llamada analítica        10    13.36     8.07    20.41
+Mediana: 1.35 veces más rápida en paralelo (4.34 ms menos)
+{"repeticiones":100,"calentamiento":10,"retardoSimuladoMs":0,"franja":"10:00","conEsperaEstimada":true,"cpus":12,"node":"v22.12.0","secuencial":{"n":100,"medianaMs":16.57,"p95Ms":21.94,"minimoMs":13.82,"maximoMs":25.08},"paralelo":{"n":100,"medianaMs":12.23,"p95Ms":15.49,"minimoMs":10.32,"maximoMs":23.49},"llamadaMotor":{"n":200,"medianaMs":4.78,"p95Ms":6.34,"minimoMs":3.84,"maximoMs":8.21},"llamadaAnalitica":{"n":200,"medianaMs":10,"p95Ms":13.36,"minimoMs":8.07,"maximoMs":20.41}}
+
+## corrida 2 · red de Docker
+Consulta de mi turno · 100 repeticiones por modo (10 de calentamiento) · retardo simulado 0 ms · franja 10:00
+Node v22.12.0 · 12 CPU
+ms                    mediana      p95   mínimo   máximo
+secuencial               14.4    21.02    12.55    105.9
+paralelo                10.98    18.42      9.8   108.53
+  llamada motor          3.99     5.53     3.23     7.22
+  llamada analítica      8.66    15.65     7.67   106.17
+Mediana: 1.31 veces más rápida en paralelo (3.42 ms menos)
+{"repeticiones":100,"calentamiento":10,"retardoSimuladoMs":0,"franja":"10:00","conEsperaEstimada":true,"cpus":12,"node":"v22.12.0","secuencial":{"n":100,"medianaMs":14.4,"p95Ms":21.02,"minimoMs":12.55,"maximoMs":105.9},"paralelo":{"n":100,"medianaMs":10.98,"p95Ms":18.42,"minimoMs":9.8,"maximoMs":108.53},"llamadaMotor":{"n":200,"medianaMs":3.99,"p95Ms":5.53,"minimoMs":3.23,"maximoMs":7.22},"llamadaAnalitica":{"n":200,"medianaMs":8.66,"p95Ms":15.65,"minimoMs":7.67,"maximoMs":106.17}}
+
+## corrida 3 · red de Docker
+Consulta de mi turno · 100 repeticiones por modo (10 de calentamiento) · retardo simulado 0 ms · franja 10:00
+Node v22.12.0 · 12 CPU
+ms                    mediana      p95   mínimo   máximo
+secuencial              13.92    19.31    12.69   191.31
+paralelo                10.79    18.95     9.56   103.85
+  llamada motor          3.62     4.67     3.01     9.31
+  llamada analítica      8.56    14.27     7.62   186.48
+Mediana: 1.29 veces más rápida en paralelo (3.13 ms menos)
+{"repeticiones":100,"calentamiento":10,"retardoSimuladoMs":0,"franja":"10:00","conEsperaEstimada":true,"cpus":12,"node":"v22.12.0","secuencial":{"n":100,"medianaMs":13.92,"p95Ms":19.31,"minimoMs":12.69,"maximoMs":191.31},"paralelo":{"n":100,"medianaMs":10.79,"p95Ms":18.95,"minimoMs":9.56,"maximoMs":103.85},"llamadaMotor":{"n":200,"medianaMs":3.62,"p95Ms":4.67,"minimoMs":3.01,"maximoMs":9.31},"llamadaAnalitica":{"n":200,"medianaMs":8.56,"p95Ms":14.27,"minimoMs":7.62,"maximoMs":186.48}}
+
+## con 20 ms simulados por llamada remota
+Consulta de mi turno · 100 repeticiones por modo (10 de calentamiento) · retardo simulado 20 ms · franja 10:00
+Node v22.12.0 · 12 CPU
+ms                    mediana      p95   mínimo   máximo
+secuencial              56.28    58.77    52.99    66.06
+paralelo                31.52    34.45    29.38    35.89
+  llamada motor         24.22    25.29    22.73    32.14
+  llamada analítica     29.94    32.62    27.55    38.77
+Mediana: 1.79 veces más rápida en paralelo (24.76 ms menos)
+{"repeticiones":100,"calentamiento":10,"retardoSimuladoMs":20,"franja":"10:00","conEsperaEstimada":true,"cpus":12,"node":"v22.12.0","secuencial":{"n":100,"medianaMs":56.28,"p95Ms":58.77,"minimoMs":52.99,"maximoMs":66.06},"paralelo":{"n":100,"medianaMs":31.52,"p95Ms":34.45,"minimoMs":29.38,"maximoMs":35.89},"llamadaMotor":{"n":200,"medianaMs":24.22,"p95Ms":25.29,"minimoMs":22.73,"maximoMs":32.14},"llamadaAnalitica":{"n":200,"medianaMs":29.94,"p95Ms":32.62,"minimoMs":27.55,"maximoMs":38.77}}
