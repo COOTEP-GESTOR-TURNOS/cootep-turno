@@ -1,6 +1,6 @@
 ﻿[CmdletBinding()]
 param(
-    [ValidateSet('generar', 'pendientes', 'activar-usuario')]
+    [ValidateSet('generar', 'pendientes', 'activar-usuario', 'limpiar')]
     [string]$Accion = 'generar',
     [int]$Semilla = 7,
     [ValidateRange(1, 3650)]
@@ -17,8 +17,9 @@ $infra = Join-Path $raiz 'infra'
 $envCompose = Join-Path $infra '.env'
 $apps = Join-Path $infra 'compose.apps.yml'
 $datos = Join-Path $infra 'compose.datos.yml'
-$node = @('exec', '-T', 'backend-principal', 'node', 'dist/cli/demo.js')
-$python = @('exec', '-T', 'analitica', 'python', '-m', 'app.scripts.generar_demo')
+# Los dos comandos se niegan a correr en producción: aquí se les indica que es un entorno de desarrollo.
+$node = @('exec', '-T', '-e', 'NODE_ENV=development', 'backend-principal', 'node', 'dist/cli/demo.js')
+$python = @('exec', '-T', '-e', 'ENTORNO=desarrollo', 'analitica', 'python', '-m', 'app.scripts.generar_demo')
 
 function Invoke-ComposeDemo {
     param([string]$Archivo, [string[]]$Argumentos, [string]$Entrada)
@@ -59,7 +60,7 @@ if ($Accion -eq 'activar-usuario' -and (-not $Id -or -not $Correo)) {
 
 $codificacion = [System.Text.UTF8Encoding]::new($false)
 $anteriorSalida = [Console]::OutputEncoding
-$anteriorEntrada = $OutputEncoding
+$anteriorEntrada = $global:OutputEncoding
 $temporales = @()
 $cerrojo = [System.Threading.Mutex]::new($false, 'Local\COOTEPTurnoDemo')
 $adquirido = $false
@@ -67,11 +68,19 @@ try {
     try { $adquirido = $cerrojo.WaitOne(0) } catch [System.Threading.AbandonedMutexException] { $adquirido = $true }
     if (-not $adquirido) { throw 'Ya hay una operación de demostración en curso en este equipo.' }
     [Console]::OutputEncoding = $codificacion
-    $OutputEncoding = $codificacion
+    # Global: es la que usa PowerShell al pasar texto por tubería a docker (UTF-8 sin BOM).
+    $global:OutputEncoding = $codificacion
 
     Invoke-ComposeDemo $datos @('exec', '-T', 'postgres', 'psql', '-v', 'ON_ERROR_STOP=1', '-U', 'cootep', '-d', 'cootep', '-f', '/docker-entrypoint-initdb.d/05-demo.sql')
     if ($Accion -eq 'activar-usuario') {
         Invoke-ComposeDemo $apps ($node + @('activar-usuario', '--id', $Id, '--correo', $Correo))
+        return
+    }
+    if ($Accion -eq 'limpiar') {
+        # Primero cuentas, turnos y filas (backend); después lo marcado como simulado y ClickHouse (analítica).
+        Invoke-ComposeDemo $apps ($node + @('limpiar'))
+        Invoke-ComposeDemo $apps ($python + @('limpiar'))
+        Write-Host 'Demostración borrada. Los datos reales y los eventos registrados a mano se conservan.'
         return
     }
 
@@ -93,7 +102,6 @@ try {
 
     Invoke-ComposeDemo $datos @('exec', '-T', 'mongo', 'mongosh', '--quiet', 'cootep', '--eval', "db.auth('cootep_app', process.env.MONGO_APP_PASSWORD)", '--file', '/docker-entrypoint-initdb.d/02-demanda.js')
     $hoy = Invoke-ComposeDemo $apps ($python + @('fecha'))
-    Invoke-ComposeDemo $apps ($python + @('preparar'))
     $turnos = (New-TemporaryFile).FullName
     $temporales += $turnos
     Invoke-ComposeDemo $apps ($python + @('historial', '--hoy', $hoy, '--dias', "$Dias")) $catalogo |
@@ -101,10 +109,11 @@ try {
     Invoke-ComposeDemo $apps ($node + @('importar')) $turnos
     Invoke-ComposeDemo $apps ($python + @('marcar-historial', '--hoy', $hoy, '--dias', "$Dias")) $catalogo
     Invoke-PendientesDemo $catalogo $seleccion $hoy
-    Invoke-ComposeDemo $apps ($python + @('publicar', '--hoy', $hoy, '--dias', "$Dias"))
+    # El historial importado es anterior a la última carga: se carga completo a ClickHouse.
+    Invoke-ComposeDemo $apps ($python + @('cargar'))
 } finally {
     [Console]::OutputEncoding = $anteriorSalida
-    $OutputEncoding = $anteriorEntrada
+    $global:OutputEncoding = $anteriorEntrada
     foreach ($archivo in $temporales) {
         Remove-Item -LiteralPath $archivo -ErrorAction SilentlyContinue
     }

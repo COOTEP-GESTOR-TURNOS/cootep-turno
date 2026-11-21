@@ -21,7 +21,6 @@ services:
       CASSANDRA_DATACENTER: datacenter1
       MOTOR_FILAS_URL: http://motor-filas:8080
       ANALITICA_URL: http://analitica:8000
-      DEMANDA_DEMO: ${DEMANDA_DEMO:-false}
       SERVICE_TOKEN: ${SERVICE_TOKEN:?Defina SERVICE_TOKEN en infra/.env}
       JWT_SECRETO: ${JWT_SECRETO:?Defina JWT_SECRETO en infra/.env}
       CLAVE_CIFRADO_MFA: ${CLAVE_CIFRADO_MFA:?Defina CLAVE_CIFRADO_MFA en infra/.env}
@@ -87,7 +86,6 @@ services:
       CLICKHOUSE_USER: cootep
       CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
       SERVICE_TOKEN: ${SERVICE_TOKEN}
-      DEMANDA_DEMO: ${DEMANDA_DEMO:-false}
       PROCESOS_ESTADISTICAS: "4"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/salud', timeout=3)"]

@@ -1,4 +1,4 @@
-// Se puede ejecutar de nuevo en volúmenes existentes para crear estos índices.
+// Se puede ejecutar de nuevo en volúmenes existentes. La analítica también crea estos índices al arrancar.
 const baseDemanda = db.getSiblingDB('cootep');
 
 baseDemanda.eventos_turno.createIndex(
@@ -10,10 +10,11 @@ baseDemanda.eventos_turno.createIndex(
   { name: 'ix_agencia_estado_servicio_tiempo' },
 );
 
-for (const nombre of ['eventos_agencia', 'eventos_agencia_demo']) {
-  const eventos = baseDemanda.getCollection(nombre);
-  eventos.createIndex({ agenciaId: 1, fecha: 1, tipo: 1 }, { unique: true, name: 'ux_agencia_fecha_tipo' });
-  eventos.createIndex({ agenciaId: 1, id: 1 }, { unique: true, name: 'ux_agencia_evento' });
-}
+// Los datos de demostración viven en estas mismas colecciones con origen = SIMULADO.
+baseDemanda.eventos_turno.createIndex(
+  { origen: 1, agenciaId: 1 },
+  { name: 'ix_origen_agencia', partialFilterExpression: { origen: { $exists: true } } },
+);
 
-baseDemanda.demanda_diaria_demo.createIndex({ agenciaId: 1, fecha: 1 }, { unique: true, name: 'ux_agencia_fecha' });
+baseDemanda.eventos_agencia.createIndex({ agenciaId: 1, fecha: 1, tipo: 1 }, { unique: true, name: 'ux_agencia_fecha_tipo' });
+baseDemanda.eventos_agencia.createIndex({ agenciaId: 1, id: 1 }, { unique: true, name: 'ux_agencia_evento' });
