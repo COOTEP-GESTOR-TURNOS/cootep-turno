@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS cootep.hechos_turno
     espera_seg     UInt32,                   -- de la solicitud al llamado
     atencion_seg   UInt32,                   -- del inicio al fin de la atención
     solicitado_en  DateTime('America/Bogota'),
+    colaborador_id Nullable(UUID),
     cargado_en     DateTime DEFAULT now()
 )
 ENGINE = ReplacingMergeTree(cargado_en)

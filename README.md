@@ -110,6 +110,27 @@ MSYS_NO_PATHCONV=1 docker compose -f infra/compose.datos.yml exec -T postgres ps
 Si clonó los repositorios como carpetas hermanas (sin submódulos), ajuste las variables
 `RUTA_*` de `infra/.env` (por ejemplo `RUTA_BACKEND_PRINCIPAL=../../backend-principal`).
 
+### Índices de demanda en MongoDB
+
+MongoDB ejecuta `02-demanda.js` al inicializar un volumen vacío. Para un volumen existente,
+ejecute el script antes de desplegar el calendario. El script se puede volver a ejecutar.
+
+```bash
+MSYS_NO_PATHCONV=1 docker compose --env-file infra/.env -f infra/compose.datos.yml exec -T mongo \
+  mongosh --quiet cootep --eval 'db.auth("cootep_app", process.env.MONGO_APP_PASSWORD)' \
+  --file /docker-entrypoint-initdb.d/02-demanda.js
+```
+
+Para habilitar los filtros históricos por servicio y colaborador en una instalación existente,
+aplique los índices y ejecute la reconstrucción desde el servicio de analítica actualizado.
+
+```powershell
+docker compose --env-file infra/.env -f infra/compose.apps.yml exec -T analitica python -m app.scripts.reproyectar_indicadores
+```
+
+La reconstrucción toma los turnos de los eventos existentes. En demostración, el corte vuelve a
+publicarse cuando termina la carga de los indicadores.
+
 ### APK
 
 La app móvil se compila fuera de Docker. En `movil/.env` ponga la IP del computador en la
@@ -119,8 +140,40 @@ están en el README del repositorio `movil`.
 ## Datos de prueba
 
 - `infra/init/postgres/02-datos-prueba.sql`: 8 agencias, 4 servicios, ventanillas y parámetros.
-- `analitica`: `python -m app.scripts.generar_historial --dias 90` carga historial simulado en MongoDB.
-- Todos los datos son ficticios. No suba datos personales reales.
+
+Con los contenedores actualizados y en ejecución, use PowerShell desde la carpeta `cootep-turno`.
+El comando aplica las migraciones de demostración en los volúmenes locales y carga las cuentas,
+los turnos, sus eventos de atención y el calendario a partir de un solo historial.
+
+```powershell
+.\scripts\demo.ps1 generar
+```
+
+La carga genera 540 días por agencia con semilla 7. Use `-Dias` para extender el historial y `-Semilla`
+para configurar la primera carga. Puede repetir el mismo comando si se interrumpe. Los días cerrados
+se muestran con cero solicitudes. Durante una jornada abierta, se crean tres pendientes por agencia.
+
+En horario de atención, puede preparar otro lote para el panel del funcionario.
+
+```powershell
+.\scripts\demo.ps1 pendientes -Lote segunda-ronda
+```
+
+Las cuentas se crean con correos ficticios. Para usar una cuenta, asígnele un correo de acceso y
+complete la recuperación de contraseña desde la pantalla de ingreso.
+
+```powershell
+.\scripts\demo.ps1 activar-usuario -Id <UUID-o-correo-ficticio> -Correo <correo-de-acceso>
+```
+
+Para consultar el historial y el pronóstico de la demostración, configure `DEMANDA_DEMO=true` en
+`infra/.env` y aplique la configuración con Compose. En **Indicadores**, el periodo **Mes del
+calendario** concilia el resumen, la comparación y el calendario. El superadministrador puede
+consultar todas las agencias. `DEMANDA_DEMO=false` selecciona la analítica habitual.
+
+```powershell
+docker compose --env-file infra/.env -f infra/compose.apps.yml up -d --build --wait analitica backend-principal web
+```
 
 ## Respaldo y recuperación de volúmenes
 
