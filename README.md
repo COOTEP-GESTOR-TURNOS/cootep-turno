@@ -110,6 +110,16 @@ MSYS_NO_PATHCONV=1 docker compose -f infra/compose.datos.yml exec -T postgres ps
 Si clonó los repositorios como carpetas hermanas (sin submódulos), ajuste las variables
 `RUTA_*` de `infra/.env` (por ejemplo `RUTA_BACKEND_PRINCIPAL=../../backend-principal`).
 
+### Índices y columnas de la analítica
+
+Al arrancar, la analítica crea los índices de MongoDB y la columna `colaborador_id` de ClickHouse,
+también en volúmenes ya inicializados; no hay que ejecutar nada a mano. En una instalación que ya
+tenía indicadores cargados, los turnos anteriores quedan sin responsable hasta una recarga completa:
+
+```powershell
+docker compose --env-file infra/.env -f infra/compose.apps.yml exec -T analitica python -m app.scripts.reproyectar_indicadores
+```
+
 ### APK
 
 La app móvil se compila fuera de Docker. En `movil/.env` ponga la IP del computador en la
@@ -119,8 +129,46 @@ están en el README del repositorio `movil`.
 ## Datos de prueba
 
 - `infra/init/postgres/02-datos-prueba.sql`: 8 agencias, 4 servicios, ventanillas y parámetros.
-- `analitica`: `python -m app.scripts.generar_historial --dias 90` carga historial simulado en MongoDB.
-- Todos los datos son ficticios. No suba datos personales reales.
+
+Todos los datos son ficticios. No suba datos personales reales.
+
+Con los contenedores actualizados y en ejecución, use PowerShell desde la carpeta `cootep-turno`.
+El comando carga cuentas, turnos con sus eventos de atención y los eventos del calendario de cada
+agencia (pagos de subsidio y de nómina, festivos locales) a partir de un solo historial simulado.
+
+```powershell
+.\scripts\demo.ps1 generar
+```
+
+Los datos simulados van a las mismas tablas y colecciones que los reales, marcados con
+`origen: "SIMULADO"`, y pasan por el mismo ETL hacia ClickHouse: la demostración recorre el camino
+que usaría el banco. En **Indicadores** aparece el aviso "Datos simulados" en las agencias que los
+tienen. Si el proyecto pasa a producción, no se ejecuta el generador (se niega a correr fuera de
+desarrollo) y los datos reales se acumulan día a día; el pronóstico aparece con 60 días de historia.
+
+La carga genera 540 días por agencia con semilla 7. Use `-Dias` para extender el historial y `-Semilla`
+para configurar la primera carga. Puede repetir el mismo comando si se interrumpe. Los días cerrados
+se muestran con cero solicitudes. Durante una jornada abierta, se crean tres pendientes por agencia.
+
+En horario de atención, puede preparar otro lote para el panel del funcionario.
+
+```powershell
+.\scripts\demo.ps1 pendientes -Lote segunda-ronda
+```
+
+Las cuentas se crean con correos ficticios. Para usar una cuenta, asígnele un correo de acceso y
+complete la recuperación de contraseña desde la pantalla de ingreso.
+
+```powershell
+.\scripts\demo.ps1 activar-usuario -Id <UUID-o-correo-ficticio> -Correo <correo-de-acceso>
+```
+
+Para borrar toda la demostración (cuentas, turnos, eventos simulados y el historial del generador
+anterior) y reconstruir ClickHouse solo con los datos reales:
+
+```powershell
+.\scripts\demo.ps1 limpiar
+```
 
 ## Respaldo y recuperación de volúmenes
 
