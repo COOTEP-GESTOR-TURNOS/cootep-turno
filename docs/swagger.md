@@ -35,8 +35,9 @@ En esa misma dirección, `/api/docs-json` entrega el contrato OpenAPI en JSON. P
 | --- | --- | --- |
 | `GET /api/v1/agencias` | Cuenta autenticada | Muestra el catálogo. De aquí salen los identificadores de agencia y servicio. |
 | `GET /api/v1/turnos/mio` | Asociado | Devuelve su turno activo. Responde `404` si no tiene uno. |
+| `GET /api/v1/turnos/en-ventanilla` | Funcionario o administrador de agencia | Devuelve el turno que tiene llamado o en atención. Responde `204` si no tiene. |
 | `POST /api/v1/turnos` | Asociado | Solicita un turno. Pide `agenciaId`, `servicioId`, `canal` y un UUID en la cabecera `Idempotency-Key`. |
-| `POST /api/v1/filas/{agenciaId}/{servicioId}/siguiente` | Funcionario o administrador de esa agencia, según su ámbito | Llama al siguiente turno. Responde `204` si la fila está vacía. |
+| `POST /api/v1/filas/{agenciaId}/{servicioId}/siguiente` | Funcionario o administrador de esa agencia, según su ámbito | Llama al siguiente turno. Responde `204` si la fila está vacía y `409` si todavía tiene otro en ventanilla. |
 | `GET /api/v1/indicadores` | Superadministrador o administrador de agencia | Consulta indicadores de atención. El administrador de agencia ve su ámbito. |
 | `GET /api/v1/admin/auditoria` | Superadministrador | Consulta eventos de auditoría por ámbito y día. |
 
