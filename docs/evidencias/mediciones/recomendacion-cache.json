@@ -1,0 +1,62 @@
+[
+  {
+    "fecha": "2026-11-24T20:29:15.893Z",
+    "filasDistintas": 16,
+    "sinCache": {
+      "n": 100,
+      "medianaMs": 18.7,
+      "p95Ms": 30.8
+    },
+    "conCache": {
+      "n": 500,
+      "medianaMs": 3.4,
+      "p95Ms": 4.6,
+      "aciertos": 484,
+      "fallos": 16,
+      "errores": 0,
+      "tasaAciertos": 0.968
+    },
+    "latenciaMediaLecturaRedisMs": 0.21,
+    "mejoraMediana": 5.5
+  },
+  {
+    "fecha": "2026-11-24T20:30:02.966Z",
+    "filasDistintas": 16,
+    "sinCache": {
+      "n": 100,
+      "medianaMs": 18.1,
+      "p95Ms": 27
+    },
+    "conCache": {
+      "n": 500,
+      "medianaMs": 3.5,
+      "p95Ms": 6.3,
+      "aciertos": 484,
+      "fallos": 16,
+      "errores": 0,
+      "tasaAciertos": 0.968
+    },
+    "latenciaMediaLecturaRedisMs": 0.23,
+    "mejoraMediana": 5.2
+  },
+  {
+    "fecha": "2026-11-24T20:30:49.986Z",
+    "filasDistintas": 16,
+    "sinCache": {
+      "n": 100,
+      "medianaMs": 18.3,
+      "p95Ms": 37.1
+    },
+    "conCache": {
+      "n": 500,
+      "medianaMs": 3.4,
+      "p95Ms": 6.4,
+      "aciertos": 484,
+      "fallos": 16,
+      "errores": 0,
+      "tasaAciertos": 0.968
+    },
+    "latenciaMediaLecturaRedisMs": 0.23,
+    "mejoraMediana": 5.5
+  }
+]

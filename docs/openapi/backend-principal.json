@@ -1,0 +1,3556 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/salud": {
+      "get": {
+        "operationId": "SaludController_salud",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operación"
+        ]
+      }
+    },
+    "/api/v1/metricas": {
+      "get": {
+        "operationId": "SaludController_metricas",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "operación"
+        ]
+      }
+    },
+    "/api/v1/turnos": {
+      "post": {
+        "operationId": "TurnosController_solicitarTurno",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "UUID; repetirlo devuelve el mismo turno",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitarTurnoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumenTurnoDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "turnos"
+        ]
+      }
+    },
+    "/api/v1/turnos/mio": {
+      "get": {
+        "operationId": "TurnosController_miTurno",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiTurnoDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "turnos"
+        ]
+      }
+    },
+    "/api/v1/turnos/en-ventanilla": {
+      "get": {
+        "operationId": "TurnosController_enVentanilla",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumenTurnoDto"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No tiene turno en ventanilla"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "CU-04: el turno que el funcionario tiene llamado o en atención",
+        "tags": [
+          "turnos"
+        ]
+      }
+    },
+    "/api/v1/turnos/{id}/cancelar": {
+      "post": {
+        "operationId": "TurnosController_cancelarTurno",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumenTurnoDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "turnos"
+        ]
+      }
+    },
+    "/api/v1/turnos/{id}/confirmar": {
+      "post": {
+        "operationId": "TurnosController_confirmarPresencia",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumenTurnoDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "turnos"
+        ]
+      }
+    },
+    "/api/v1/turnos/{id}/iniciar": {
+      "post": {
+        "operationId": "TurnosController_iniciar",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumenTurnoDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "turnos"
+        ]
+      }
+    },
+    "/api/v1/turnos/{id}/finalizar": {
+      "post": {
+        "operationId": "TurnosController_finalizar",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumenTurnoDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "turnos"
+        ]
+      }
+    },
+    "/api/v1/turnos/{id}/ausente": {
+      "post": {
+        "operationId": "TurnosController_ausente",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumenTurnoDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "turnos"
+        ]
+      }
+    },
+    "/api/v1/turnos/{id}/verificar-preferencial": {
+      "post": {
+        "operationId": "TurnosController_verificarPreferencial",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificarPreferencialDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumenTurnoDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "turnos"
+        ]
+      }
+    },
+    "/api/v1/filas/{agenciaId}/{servicioId}/turnos": {
+      "get": {
+        "operationId": "FilasController_listar",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "servicioId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagina",
+            "required": false,
+            "in": "query",
+            "description": "Número de página, desde 1",
+            "schema": {
+              "minimum": 1,
+              "maximum": 2147483647,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "tamano",
+            "required": false,
+            "in": "query",
+            "description": "Elementos por página",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaTurnosDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Consulta la fila paginada en el orden del próximo llamado",
+        "tags": [
+          "filas"
+        ]
+      }
+    },
+    "/api/v1/filas/{agenciaId}/{servicioId}/siguiente": {
+      "post": {
+        "operationId": "FilasController_llamarSiguiente",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "servicioId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumenTurnoDto"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "La fila está vacía"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "filas"
+        ]
+      }
+    },
+    "/api/v1/agencias": {
+      "get": {
+        "operationId": "CatalogoController_listar",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "RF-06: agencias con sus servicios y ventanillas",
+        "tags": [
+          "catálogo"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "RF-01: correo y contraseña. Puede pedir cambiar la clave o MFA antes de abrir la sesión",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/clave-inicial": {
+      "post": {
+        "operationId": "AuthController_claveInicial",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClaveInicialDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Cambia la contraseña temporal durante el primer ingreso",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/mfa/configurar": {
+      "post": {
+        "operationId": "AuthController_configurarMfa",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "RF-03: genera el secreto TOTP y su código QR para la app autenticadora",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/mfa/verificar": {
+      "post": {
+        "operationId": "AuthController_verificarMfa",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificarMfaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "RF-03: valida el código TOTP (al configurarlo o en cada ingreso)",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/renovar": {
+      "post": {
+        "operationId": "AuthController_renovar",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-cootep-csrf",
+            "in": "header",
+            "description": "Web: \"1\" (anti-CSRF)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenovacionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Entrega un token de acceso nuevo y rota la renovación",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/cerrar-sesion": {
+      "post": {
+        "operationId": "AuthController_cerrarSesion",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenovacionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "summary": "RF-05: borra la renovación y revoca el token de acceso hasta que venza",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/yo": {
+      "get": {
+        "operationId": "AuthController_yo",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Perfil y roles de la sesión actual",
+        "tags": [
+          "identidad"
+        ]
+      },
+      "patch": {
+        "operationId": "AuthController_actualizarPerfil",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarPerfilDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Completa o corrige los datos propios (por ejemplo, el documento después de entrar con Google)",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/yo/clave": {
+      "post": {
+        "operationId": "AuthController_cambiarClave",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CambiarClaveDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Cambia la contraseña propia",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/registro": {
+      "post": {
+        "operationId": "AuthController_registro",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistroDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Registro público de asociados; envía un enlace para confirmar el correo",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/verificar-correo": {
+      "post": {
+        "operationId": "AuthController_verificarCorreo",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/verificar-correo/reenviar": {
+      "post": {
+        "operationId": "AuthController_reenviarVerificacion",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorreoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/recuperar": {
+      "post": {
+        "operationId": "AuthController_recuperar",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorreoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": ""
+          }
+        },
+        "summary": "RF-04: envía un enlace de un solo uso (15 min). Responde igual exista o no la cuenta",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/restablecer": {
+      "post": {
+        "operationId": "AuthController_restablecer",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RestablecerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "summary": "RF-04: fija la contraseña con el enlace de recuperación o de activación",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/oidc/{proveedor}/inicio": {
+      "get": {
+        "operationId": "AuthController_inicioOidc",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "proveedor",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "RF-02: redirige a Google (código de autorización + PKCE)",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/oidc/{proveedor}/callback": {
+      "get": {
+        "operationId": "AuthController_callbackOidc",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "proveedor",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "RF-02: retorno de Google; abre la sesión o pide MFA y vuelve a la web o a la app",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/oidc/canjear": {
+      "post": {
+        "operationId": "AuthController_canjear",
+        "parameters": [
+          {
+            "name": "X-Cliente",
+            "in": "header",
+            "description": "\"movil\" para recibir los tokens en el cuerpo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CanjeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Móvil: cambia el código de un minuto por los tokens de la sesión",
+        "tags": [
+          "identidad"
+        ]
+      }
+    },
+    "/api/v1/admin/auditoria": {
+      "get": {
+        "operationId": "AuditoriaController_porAmbitoDia",
+        "parameters": [
+          {
+            "name": "limite",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50,
+              "type": "number"
+            }
+          },
+          {
+            "name": "siguiente",
+            "required": false,
+            "in": "query",
+            "description": "Valor siguiente de la página anterior. Conserva los mismos filtros.",
+            "schema": {
+              "maxLength": 2000,
+              "type": "string"
+            }
+          },
+          {
+            "name": "ambito",
+            "required": true,
+            "in": "query",
+            "description": "GLOBAL o el id de una agencia",
+            "schema": {
+              "example": "GLOBAL",
+              "type": "string"
+            }
+          },
+          {
+            "name": "dia",
+            "required": false,
+            "in": "query",
+            "description": "Día en hora de Colombia. Usa el mismo día al paginar.",
+            "schema": {
+              "format": "date",
+              "example": "2026-11-16",
+              "type": "string"
+            }
+          },
+          {
+            "name": "accion",
+            "required": false,
+            "in": "query",
+            "description": "Filtra las entradas de todas las páginas por acción.",
+            "schema": {
+              "example": "INTENTO_FUERA_DE_AMBITO",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaAmbitoDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "CU-06: registros de un ámbito (GLOBAL o agencia) en un día, del más reciente al más antiguo",
+        "tags": [
+          "auditoría"
+        ]
+      }
+    },
+    "/api/v1/admin/auditoria/actores/{actorId}": {
+      "get": {
+        "operationId": "AuditoriaController_porActorMes",
+        "parameters": [
+          {
+            "name": "actorId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limite",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50,
+              "type": "number"
+            }
+          },
+          {
+            "name": "siguiente",
+            "required": false,
+            "in": "query",
+            "description": "Valor siguiente de la página anterior. Conserva los mismos filtros.",
+            "schema": {
+              "maxLength": 2000,
+              "type": "string"
+            }
+          },
+          {
+            "name": "mes",
+            "required": false,
+            "in": "query",
+            "description": "Mes AAAA-MM. Por defecto, el mes actual en Colombia.",
+            "schema": {
+              "example": "2026-11",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaActorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Qué hizo una persona en un mes (segunda tabla de consulta de Cassandra)",
+        "tags": [
+          "auditoría"
+        ]
+      }
+    },
+    "/api/v1/admin/usuarios": {
+      "get": {
+        "operationId": "UsuariosAdminController_listar",
+        "parameters": [
+          {
+            "name": "pagina",
+            "required": false,
+            "in": "query",
+            "description": "Número de página, desde 1",
+            "schema": {
+              "minimum": 1,
+              "maximum": 2147483647,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "tamano",
+            "required": false,
+            "in": "query",
+            "description": "Elementos por página",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "texto",
+            "required": false,
+            "in": "query",
+            "description": "Nombre, correo o documento",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rol",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SUPERADMIN",
+                "ADMIN_AGENCIA",
+                "FUNCIONARIO",
+                "ASOCIADO"
+              ]
+            }
+          },
+          {
+            "name": "agenciaId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "activo",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaUsuariosDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Usuarios de su ámbito, con búsqueda y paginación",
+        "tags": [
+          "administración"
+        ]
+      },
+      "post": {
+        "operationId": "UsuariosAdminController_crear",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearUsuarioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Crea la cuenta con su rol y envía el enlace de activación por correo",
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/usuarios/{id}": {
+      "get": {
+        "operationId": "UsuariosAdminController_obtener",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "administración"
+        ]
+      },
+      "patch": {
+        "operationId": "UsuariosAdminController_actualizar",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarUsuarioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Edita los datos o activa y desactiva la cuenta",
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/usuarios/{id}/roles": {
+      "post": {
+        "operationId": "UsuariosAdminController_asignarRol",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AsignarRolDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/usuarios/{id}/roles/{asignacionId}": {
+      "delete": {
+        "operationId": "UsuariosAdminController_revocarRol",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "asignacionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/usuarios/{id}/activacion": {
+      "post": {
+        "operationId": "UsuariosAdminController_reenviarActivacion",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Reenvía el enlace para definir la contraseña",
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/usuarios/{id}/mfa/restablecer": {
+      "post": {
+        "operationId": "UsuariosAdminController_restablecerMfa",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Borra el MFA de la cuenta; deberá configurarlo de nuevo al ingresar",
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/agencias/{id}/cierre": {
+      "post": {
+        "operationId": "AgenciasAdminController_cerrarJornada",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "RN-13: cierra la jornada; los turnos pendientes quedan cancelados y cada asociado recibe el aviso",
+        "tags": [
+          "administración"
+        ]
+      },
+      "delete": {
+        "operationId": "AgenciasAdminController_reabrirJornada",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Deshace el cierre anticipado de hoy: la agencia vuelve a recibir turnos si está en horario",
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/agencias/{id}": {
+      "get": {
+        "operationId": "AgenciasAdminController_obtener",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Servicios, ventanillas, horario y parámetros efectivos de la agencia",
+        "tags": [
+          "administración"
+        ]
+      },
+      "patch": {
+        "operationId": "AgenciasAdminController_actualizarAgencia",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarAgenciaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Abre o cierra la agencia completa (solo superadministrador)",
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/agencias/{id}/servicios/{servicioId}": {
+      "patch": {
+        "operationId": "AgenciasAdminController_actualizarServicio",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "servicioId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarServicioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Cambia las ventanillas o deja de ofrecer un servicio; la espera estimada se ajusta de inmediato",
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/agencias/{id}/parametros/{clave}": {
+      "put": {
+        "operationId": "AgenciasAdminController_fijarParametro",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "clave",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValorParametroDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Fija un parámetro propio de la agencia (horario, K, N_PROXIMO, tiempos)",
+        "tags": [
+          "administración"
+        ]
+      },
+      "delete": {
+        "operationId": "AgenciasAdminController_restablecerParametro",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "clave",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Quita el valor propio: la agencia vuelve a usar el global",
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/parametros": {
+      "get": {
+        "operationId": "AgenciasAdminController_parametrosGlobales",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Parámetros globales (CU-06)",
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/admin/parametros/{clave}": {
+      "put": {
+        "operationId": "AgenciasAdminController_fijarParametroGlobal",
+        "parameters": [
+          {
+            "name": "clave",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValorParametroDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Cambia un parámetro global; afecta a las agencias que no lo sobrescriben",
+        "tags": [
+          "administración"
+        ]
+      }
+    },
+    "/api/v1/recomendaciones": {
+      "get": {
+        "operationId": "RecomendacionesController_recomendar",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "servicioId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fecha",
+            "required": false,
+            "in": "query",
+            "description": "Por defecto, hoy en la hora de Colombia",
+            "schema": {
+              "example": "2026-11-18",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "RF-10: las franjas de 30 min con menor espera histórica para esa fila y día",
+        "tags": [
+          "analítica"
+        ]
+      }
+    },
+    "/api/v1/indicadores": {
+      "get": {
+        "operationId": "IndicadoresController_indicadores",
+        "parameters": [
+          {
+            "name": "pagina",
+            "required": false,
+            "in": "query",
+            "description": "Número de página, desde 1",
+            "schema": {
+              "minimum": 1,
+              "maximum": 2147483647,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "tamano",
+            "required": false,
+            "in": "query",
+            "description": "Elementos por página",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "agenciaId",
+            "required": false,
+            "in": "query",
+            "description": "Sin agencia: todas las de su ámbito",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "servicioId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "colaboradorId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "desde",
+            "required": false,
+            "in": "query",
+            "description": "Por defecto, 30 días antes de hasta",
+            "schema": {
+              "example": "2026-10-18",
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasta",
+            "required": false,
+            "in": "query",
+            "description": "Por defecto, hoy en la hora de Colombia",
+            "schema": {
+              "example": "2026-11-16",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TableroIndicadoresDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "RF-19: atendidos, cancelados, ausentes, espera y atención promedio por agencia y total",
+        "tags": [
+          "analítica"
+        ]
+      }
+    },
+    "/api/v1/analitica/agencias/{agenciaId}/demanda": {
+      "get": {
+        "operationId": "DemandaController_calendario",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mes",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": "2026-11",
+              "type": "string"
+            }
+          },
+          {
+            "name": "servicioId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalendarioDemandaDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "analítica"
+        ]
+      }
+    },
+    "/api/v1/analitica/agencias/{agenciaId}/eventos": {
+      "post": {
+        "operationId": "DemandaController_crearEvento",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatosEventoAgenciaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventoAgenciaDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "analítica"
+        ]
+      }
+    },
+    "/api/v1/analitica/agencias/{agenciaId}/eventos/{eventoId}": {
+      "patch": {
+        "operationId": "DemandaController_editarEvento",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "eventoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CambiosEventoAgenciaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventoAgenciaDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "analítica"
+        ]
+      },
+      "delete": {
+        "operationId": "DemandaController_eliminarEvento",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "eventoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "analítica"
+        ]
+      }
+    },
+    "/api/v1/analitica/tablero": {
+      "get": {
+        "operationId": "TableroMensualController_tablero",
+        "parameters": [
+          {
+            "name": "mes",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": "2026-11",
+              "type": "string"
+            }
+          },
+          {
+            "name": "servicioId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "agenciaId",
+            "required": false,
+            "in": "query",
+            "description": "El superadministrador puede omitir la agencia para ver el total general",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "colaboradorId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TableroMensualDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "analítica"
+        ]
+      }
+    },
+    "/api/v1/analitica/filtros": {
+      "get": {
+        "operationId": "TableroMensualController_filtros",
+        "parameters": [
+          {
+            "name": "desde",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasta",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "name": "agenciaId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "servicioId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FiltrosAnaliticaDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "analítica"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "COOTEP Turno · backend principal",
+    "description": "API pública de la web y la app móvil. Errores en formato Problem Details (RFC 9457).",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "SolicitarTurnoDto": {
+        "type": "object",
+        "properties": {
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "a0000000-0000-4000-8000-000000000001"
+          },
+          "servicioId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "b0000000-0000-4000-8000-000000000001"
+          },
+          "solicitaPreferencial": {
+            "type": "boolean",
+            "description": "Autodeclaración de gestante o discapacidad (RN-06). No se guarda el motivo."
+          },
+          "canal": {
+            "type": "string",
+            "enum": [
+              "WEB",
+              "MOVIL"
+            ]
+          }
+        },
+        "required": [
+          "agenciaId",
+          "servicioId",
+          "canal"
+        ]
+      },
+      "ResumenTurnoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "codigo": {
+            "type": "object",
+            "nullable": true,
+            "example": "C-014"
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "SOLICITADO",
+              "EN_ESPERA",
+              "PROXIMO",
+              "LLAMADO",
+              "EN_ATENCION",
+              "ATENDIDO",
+              "CANCELADO",
+              "AUSENTE"
+            ]
+          },
+          "tipoAtencion": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "PREFERENCIAL"
+            ]
+          },
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "servicioId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "personasDelante": {
+            "type": "object",
+            "nullable": true
+          },
+          "confirmado": {
+            "type": "boolean",
+            "description": "RN-10: el asociado ya confirmó que viene"
+          }
+        },
+        "required": [
+          "id",
+          "codigo",
+          "estado",
+          "tipoAtencion",
+          "agenciaId",
+          "servicioId",
+          "personasDelante",
+          "confirmado"
+        ]
+      },
+      "MiTurnoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "codigo": {
+            "type": "object",
+            "nullable": true,
+            "example": "C-014"
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "SOLICITADO",
+              "EN_ESPERA",
+              "PROXIMO",
+              "LLAMADO",
+              "EN_ATENCION",
+              "ATENDIDO",
+              "CANCELADO",
+              "AUSENTE"
+            ]
+          },
+          "tipoAtencion": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "PREFERENCIAL"
+            ]
+          },
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "servicioId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "personasDelante": {
+            "type": "object",
+            "nullable": true
+          },
+          "confirmado": {
+            "type": "boolean",
+            "description": "RN-10: el asociado ya confirmó que viene"
+          },
+          "esperaEstimadaMin": {
+            "type": "object",
+            "nullable": true,
+            "description": "Minutos; null si la analítica no respondió"
+          }
+        },
+        "required": [
+          "id",
+          "codigo",
+          "estado",
+          "tipoAtencion",
+          "agenciaId",
+          "servicioId",
+          "personasDelante",
+          "confirmado",
+          "esperaEstimadaMin"
+        ]
+      },
+      "VerificarPreferencialDto": {
+        "type": "object",
+        "properties": {
+          "cumple": {
+            "type": "boolean",
+            "description": "true si la condición se comprobó en la ventanilla"
+          }
+        },
+        "required": [
+          "cumple"
+        ]
+      },
+      "TurnoEnFilaDto": {
+        "type": "object",
+        "properties": {
+          "turnoId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "numero": {
+            "type": "number",
+            "example": 1
+          },
+          "tipoAtencion": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "PREFERENCIAL"
+            ]
+          }
+        },
+        "required": [
+          "turnoId",
+          "numero",
+          "tipoAtencion"
+        ]
+      },
+      "PaginaTurnosDto": {
+        "type": "object",
+        "properties": {
+          "pagina": {
+            "type": "number",
+            "example": 1,
+            "minimum": 1
+          },
+          "tamano": {
+            "type": "number",
+            "example": 20,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "total": {
+            "type": "number",
+            "example": 42,
+            "minimum": 0,
+            "description": "Cantidad total que coincide con los filtros, antes de paginar"
+          },
+          "totalPaginas": {
+            "type": "number",
+            "example": 3,
+            "minimum": 0
+          },
+          "elementos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TurnoEnFilaDto"
+            }
+          }
+        },
+        "required": [
+          "pagina",
+          "tamano",
+          "total",
+          "totalPaginas",
+          "elementos"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "correo": {
+            "type": "string",
+            "example": "asociado.demo@cootep-turno.test"
+          },
+          "clave": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "correo",
+          "clave"
+        ]
+      },
+      "ClaveInicialDto": {
+        "type": "object",
+        "properties": {
+          "reto": {
+            "type": "string",
+            "description": "Identificador del reto devuelto por /auth/login"
+          },
+          "claveNueva": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reto",
+          "claveNueva"
+        ]
+      },
+      "RetoDto": {
+        "type": "object",
+        "properties": {
+          "reto": {
+            "type": "string",
+            "description": "Identificador del reto devuelto por /auth/login"
+          }
+        },
+        "required": [
+          "reto"
+        ]
+      },
+      "VerificarMfaDto": {
+        "type": "object",
+        "properties": {
+          "reto": {
+            "type": "string",
+            "description": "Identificador del reto devuelto por /auth/login"
+          },
+          "codigo": {
+            "type": "string",
+            "example": "123456"
+          }
+        },
+        "required": [
+          "reto",
+          "codigo"
+        ]
+      },
+      "RenovacionDto": {
+        "type": "object",
+        "properties": {
+          "tokenRenovacion": {
+            "type": "string",
+            "description": "Solo la app móvil; la web usa la cookie HttpOnly"
+          }
+        }
+      },
+      "ActualizarPerfilDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string"
+          },
+          "tipoDocumento": {
+            "type": "string",
+            "enum": [
+              "CC",
+              "CE",
+              "TI",
+              "PA"
+            ]
+          },
+          "numeroDocumento": {
+            "type": "string"
+          },
+          "fechaNacimiento": {
+            "type": "string"
+          }
+        }
+      },
+      "CambiarClaveDto": {
+        "type": "object",
+        "properties": {
+          "claveActual": {
+            "type": "string",
+            "description": "Obligatoria si la cuenta ya tiene contraseña"
+          },
+          "claveNueva": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "claveNueva"
+        ]
+      },
+      "RegistroDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "nueva.persona@correo.com"
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Ana María Rojas"
+          },
+          "tipoDocumento": {
+            "type": "string",
+            "enum": [
+              "CC",
+              "CE",
+              "TI",
+              "PA"
+            ]
+          },
+          "numeroDocumento": {
+            "type": "string",
+            "example": "1098765432"
+          },
+          "fechaNacimiento": {
+            "type": "string",
+            "example": "1990-05-01",
+            "description": "Permite reconocer a los adultos mayores"
+          },
+          "clave": {
+            "type": "string",
+            "description": "Mínimo 15 caracteres; se aceptan frases"
+          }
+        },
+        "required": [
+          "email",
+          "nombre",
+          "tipoDocumento",
+          "numeroDocumento",
+          "clave"
+        ]
+      },
+      "TokenDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "CorreoDto": {
+        "type": "object",
+        "properties": {
+          "correo": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "correo"
+        ]
+      },
+      "RestablecerDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "claveNueva": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "claveNueva"
+        ]
+      },
+      "CanjeDto": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "codigo"
+        ]
+      },
+      "ActorAuditoriaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rol": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "rol",
+          "nombre",
+          "email"
+        ]
+      },
+      "EntradaAuditoriaDto": {
+        "type": "object",
+        "properties": {
+          "ocurridoEn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ambito": {
+            "type": "string"
+          },
+          "accion": {
+            "type": "string"
+          },
+          "actor": {
+            "$ref": "#/components/schemas/ActorAuditoriaDto"
+          },
+          "objetivoTipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "objetivoId": {
+            "type": "string"
+          },
+          "detalle": {
+            "type": "object",
+            "additionalProperties": true,
+            "nullable": true
+          },
+          "ip": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "ocurridoEn",
+          "ambito",
+          "accion",
+          "actor",
+          "objetivoTipo",
+          "objetivoId",
+          "detalle",
+          "ip"
+        ]
+      },
+      "AuditoriaAmbitoDto": {
+        "type": "object",
+        "properties": {
+          "entradas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EntradaAuditoriaDto"
+            }
+          },
+          "siguiente": {
+            "type": "string",
+            "nullable": true,
+            "description": "Cursor para la próxima página, o null al terminar."
+          },
+          "limite": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 200
+          },
+          "ambito": {
+            "type": "string"
+          },
+          "dia": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "entradas",
+          "siguiente",
+          "limite",
+          "ambito",
+          "dia"
+        ]
+      },
+      "AuditoriaActorDto": {
+        "type": "object",
+        "properties": {
+          "entradas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EntradaAuditoriaDto"
+            }
+          },
+          "siguiente": {
+            "type": "string",
+            "nullable": true,
+            "description": "Cursor para la próxima página, o null al terminar."
+          },
+          "limite": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 200
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "mes": {
+            "type": "string",
+            "example": "2026-11"
+          }
+        },
+        "required": [
+          "entradas",
+          "siguiente",
+          "limite",
+          "actorId",
+          "mes"
+        ]
+      },
+      "PaginaUsuariosDto": {
+        "type": "object",
+        "properties": {
+          "pagina": {
+            "type": "number",
+            "example": 1,
+            "minimum": 1
+          },
+          "tamano": {
+            "type": "number",
+            "example": 20,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "total": {
+            "type": "number",
+            "example": 42,
+            "minimum": 0,
+            "description": "Cantidad total que coincide con los filtros, antes de paginar"
+          },
+          "totalPaginas": {
+            "type": "number",
+            "example": 3,
+            "minimum": 0
+          },
+          "elementos": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Fichas de usuarios visibles para el administrador"
+          }
+        },
+        "required": [
+          "pagina",
+          "tamano",
+          "total",
+          "totalPaginas",
+          "elementos"
+        ]
+      },
+      "CrearUsuarioDto": {
+        "type": "object",
+        "properties": {
+          "rol": {
+            "type": "string",
+            "enum": [
+              "SUPERADMIN",
+              "ADMIN_AGENCIA",
+              "FUNCIONARIO",
+              "ASOCIADO"
+            ]
+          },
+          "agenciaId": {
+            "type": "string",
+            "description": "Obligatoria para ADMIN_AGENCIA y FUNCIONARIO"
+          },
+          "servicioId": {
+            "type": "string",
+            "description": "Solo FUNCIONARIO: sin servicio atiende todos los de su agencia"
+          },
+          "email": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "tipoDocumento": {
+            "type": "string",
+            "enum": [
+              "CC",
+              "CE",
+              "TI",
+              "PA"
+            ]
+          },
+          "numeroDocumento": {
+            "type": "string"
+          },
+          "fechaNacimiento": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "rol",
+          "email",
+          "nombre"
+        ]
+      },
+      "ActualizarUsuarioDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string"
+          },
+          "tipoDocumento": {
+            "type": "string",
+            "enum": [
+              "CC",
+              "CE",
+              "TI",
+              "PA"
+            ]
+          },
+          "numeroDocumento": {
+            "type": "string"
+          },
+          "fechaNacimiento": {
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean",
+            "description": "false desactiva la cuenta y cierra sus sesiones"
+          }
+        }
+      },
+      "AsignarRolDto": {
+        "type": "object",
+        "properties": {
+          "rol": {
+            "type": "string",
+            "enum": [
+              "SUPERADMIN",
+              "ADMIN_AGENCIA",
+              "FUNCIONARIO",
+              "ASOCIADO"
+            ]
+          },
+          "agenciaId": {
+            "type": "string",
+            "description": "Obligatoria para ADMIN_AGENCIA y FUNCIONARIO"
+          },
+          "servicioId": {
+            "type": "string",
+            "description": "Solo FUNCIONARIO: sin servicio atiende todos los de su agencia"
+          }
+        },
+        "required": [
+          "rol"
+        ]
+      },
+      "ActualizarAgenciaDto": {
+        "type": "object",
+        "properties": {
+          "activa": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "activa"
+        ]
+      },
+      "ActualizarServicioDto": {
+        "type": "object",
+        "properties": {
+          "ventanillas": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 20
+          },
+          "activo": {
+            "type": "boolean",
+            "description": "false: la agencia deja de ofrecer el servicio"
+          }
+        }
+      },
+      "ValorParametroDto": {
+        "type": "object",
+        "properties": {
+          "valor": {
+            "type": "string",
+            "example": "3"
+          }
+        },
+        "required": [
+          "valor"
+        ]
+      },
+      "IndicadoresAgenciaDto": {
+        "type": "object",
+        "properties": {
+          "solicitados": {
+            "type": "integer",
+            "nullable": true
+          },
+          "pendientes": {
+            "type": "integer",
+            "nullable": true
+          },
+          "atendidos": {
+            "type": "number"
+          },
+          "cancelados": {
+            "type": "number"
+          },
+          "ausentes": {
+            "type": "number"
+          },
+          "esperaPromedioMin": {
+            "type": "number"
+          },
+          "atencionPromedioMin": {
+            "type": "number"
+          },
+          "proporcionPreferencial": {
+            "type": "number"
+          },
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "disponible": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "atendidos",
+          "cancelados",
+          "ausentes",
+          "esperaPromedioMin",
+          "atencionPromedioMin",
+          "proporcionPreferencial",
+          "agenciaId",
+          "nombre",
+          "disponible"
+        ]
+      },
+      "ValoresIndicadoresDto": {
+        "type": "object",
+        "properties": {
+          "solicitados": {
+            "type": "integer",
+            "nullable": true
+          },
+          "pendientes": {
+            "type": "integer",
+            "nullable": true
+          },
+          "atendidos": {
+            "type": "number"
+          },
+          "cancelados": {
+            "type": "number"
+          },
+          "ausentes": {
+            "type": "number"
+          },
+          "esperaPromedioMin": {
+            "type": "number"
+          },
+          "atencionPromedioMin": {
+            "type": "number"
+          },
+          "proporcionPreferencial": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "atendidos",
+          "cancelados",
+          "ausentes",
+          "esperaPromedioMin",
+          "atencionPromedioMin",
+          "proporcionPreferencial"
+        ]
+      },
+      "PaginacionDto": {
+        "type": "object",
+        "properties": {
+          "pagina": {
+            "type": "number",
+            "example": 1,
+            "minimum": 1
+          },
+          "tamano": {
+            "type": "number",
+            "example": 20,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "total": {
+            "type": "number",
+            "example": 42,
+            "minimum": 0,
+            "description": "Cantidad total que coincide con los filtros, antes de paginar"
+          },
+          "totalPaginas": {
+            "type": "number",
+            "example": 3,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "pagina",
+          "tamano",
+          "total",
+          "totalPaginas"
+        ]
+      },
+      "TableroIndicadoresDto": {
+        "type": "object",
+        "properties": {
+          "desde": {
+            "type": "string",
+            "format": "date"
+          },
+          "hasta": {
+            "type": "string",
+            "format": "date"
+          },
+          "ambito": {
+            "type": "string",
+            "enum": [
+              "GLOBAL",
+              "AGENCIA"
+            ]
+          },
+          "agencias": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndicadoresAgenciaDto"
+            }
+          },
+          "total": {
+            "description": "Indicadores de todas las agencias disponibles del ámbito y rango",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ValoresIndicadoresDto"
+              }
+            ]
+          },
+          "paginacion": {
+            "description": "Presente al enviar pagina o tamano; solo pagina la lista de agencias",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginacionDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "desde",
+          "hasta",
+          "ambito",
+          "agencias",
+          "total"
+        ]
+      },
+      "EventoAgenciaDto": {
+        "type": "object",
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-11-20"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "FESTIVO_LOCAL",
+              "PAGO_SUBSIDIO_FAMILIAR",
+              "PAGO_NOMINA"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agenciaNombre": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fecha",
+          "tipo",
+          "id"
+        ]
+      },
+      "DiaDemandaDto": {
+        "type": "object",
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date"
+          },
+          "diaHabil": {
+            "type": "boolean"
+          },
+          "finDeSemana": {
+            "type": "boolean"
+          },
+          "festivoNacional": {
+            "type": "string",
+            "nullable": true
+          },
+          "festivosPutumayo": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "vencimientoCredito": {
+            "type": "boolean"
+          },
+          "eventos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventoAgenciaDto"
+            }
+          },
+          "turnosRegistrados": {
+            "type": "integer",
+            "nullable": true
+          },
+          "turnosEstimados": {
+            "type": "integer",
+            "nullable": true
+          },
+          "nivelDemanda": {
+            "type": "string",
+            "enum": [
+              "BAJA",
+              "MEDIA",
+              "ALTA"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "fecha",
+          "diaHabil",
+          "finDeSemana",
+          "festivoNacional",
+          "festivosPutumayo",
+          "vencimientoCredito",
+          "eventos",
+          "turnosRegistrados",
+          "turnosEstimados",
+          "nivelDemanda"
+        ]
+      },
+      "CalendarioDemandaDto": {
+        "type": "object",
+        "properties": {
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "mes": {
+            "type": "string",
+            "example": "2026-11"
+          },
+          "fuente": {
+            "type": "string",
+            "enum": [
+              "REAL",
+              "SIMULADA"
+            ]
+          },
+          "estadoPronostico": {
+            "type": "string",
+            "enum": [
+              "DISPONIBLE",
+              "HISTORIAL_INSUFICIENTE",
+              "SOLO_CALENDARIO",
+              "INCOMPLETO"
+            ]
+          },
+          "dias": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiaDemandaDto"
+            }
+          }
+        },
+        "required": [
+          "agenciaId",
+          "mes",
+          "fuente",
+          "estadoPronostico",
+          "dias"
+        ]
+      },
+      "DatosEventoAgenciaDto": {
+        "type": "object",
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-11-20"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "FESTIVO_LOCAL",
+              "PAGO_SUBSIDIO_FAMILIAR",
+              "PAGO_NOMINA"
+            ]
+          }
+        },
+        "required": [
+          "fecha",
+          "tipo"
+        ]
+      },
+      "CambiosEventoAgenciaDto": {
+        "type": "object",
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-11-20"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "FESTIVO_LOCAL",
+              "PAGO_SUBSIDIO_FAMILIAR",
+              "PAGO_NOMINA"
+            ]
+          }
+        }
+      },
+      "TableroMensualDto": {
+        "type": "object",
+        "properties": {
+          "fuente": {
+            "type": "string",
+            "enum": [
+              "REAL",
+              "SIMULADA"
+            ]
+          },
+          "actualizadoEn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "desde": {
+            "type": "string",
+            "format": "date"
+          },
+          "hasta": {
+            "type": "string",
+            "format": "date"
+          },
+          "resumen": {
+            "$ref": "#/components/schemas/ValoresIndicadoresDto"
+          },
+          "agencias": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndicadoresAgenciaDto"
+            }
+          },
+          "calendario": {
+            "$ref": "#/components/schemas/CalendarioDemandaDto"
+          }
+        },
+        "required": [
+          "fuente",
+          "actualizadoEn",
+          "desde",
+          "hasta",
+          "resumen",
+          "agencias",
+          "calendario"
+        ]
+      },
+      "OpcionIndicadorDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nombre": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nombre"
+        ]
+      },
+      "OpcionColaboradorDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "agenciaIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "nombre",
+          "agenciaIds"
+        ]
+      },
+      "FiltrosAnaliticaDto": {
+        "type": "object",
+        "properties": {
+          "servicios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OpcionIndicadorDto"
+            }
+          },
+          "colaboradores": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OpcionColaboradorDto"
+            }
+          }
+        },
+        "required": [
+          "servicios",
+          "colaboradores"
+        ]
+      }
+    }
+  }
+}

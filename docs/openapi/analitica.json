@@ -1,0 +1,1952 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "COOTEP Turno · analítica",
+    "description": "Indicadores, demanda, recomendación de horario y parámetros de espera. Servicio interno.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/salud": {
+      "get": {
+        "tags": [
+          "operación"
+        ],
+        "summary": "Salud",
+        "description": "Healthcheck de Docker. No consulta los motores para no reiniciar el contenedor si uno falla.",
+        "operationId": "salud_salud_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Salud Salud Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/recomendaciones": {
+      "get": {
+        "tags": [
+          "recomendaciones"
+        ],
+        "summary": "Recomendar",
+        "description": "Las 3 franjas con menor espera mediana para ese día de la semana y tipo de día.",
+        "operationId": "recomendar_api_v1_recomendaciones_get",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agenciaid"
+            }
+          },
+          {
+            "name": "servicioId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Servicioid"
+            }
+          },
+          {
+            "name": "fecha",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Fecha"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recomendacion"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/estimaciones/parametros": {
+      "get": {
+        "tags": [
+          "estimaciones"
+        ],
+        "summary": "Parametros Espera",
+        "description": "t̄ y p de la franja; 404 si no hay historial suficiente.",
+        "operationId": "parametros_espera_api_v1_estimaciones_parametros_get",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agenciaid"
+            }
+          },
+          {
+            "name": "servicioId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Servicioid"
+            }
+          },
+          {
+            "name": "franja",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{2}:(00|30)$",
+              "title": "Franja"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParametrosEspera"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/estimaciones": {
+      "post": {
+        "tags": [
+          "estimaciones"
+        ],
+        "summary": "Estimar",
+        "operationId": "estimar_api_v1_estimaciones_post",
+        "parameters": [
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitudEstimacion"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Estimacion"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/indicadores": {
+      "get": {
+        "tags": [
+          "indicadores"
+        ],
+        "summary": "Indicadores",
+        "operationId": "indicadores_api_v1_indicadores_get",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agenciaid"
+            }
+          },
+          {
+            "name": "desde",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Desde"
+            }
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Hasta"
+            }
+          },
+          {
+            "name": "servicioId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Servicioid"
+            }
+          },
+          {
+            "name": "colaboradorId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Colaboradorid"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Indicadores"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/etl/ejecutar": {
+      "post": {
+        "tags": [
+          "etl"
+        ],
+        "summary": "Ejecutar Etl",
+        "description": "Carga los eventos nuevos (o todos, con completa=true) de MongoDB a ClickHouse.\nCon reconstruir=true vacía antes hechos_turno: ClickHouse queda igual a MongoDB.",
+        "operationId": "ejecutar_etl_api_v1_etl_ejecutar_post",
+        "parameters": [
+          {
+            "name": "completa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Completa"
+            }
+          },
+          {
+            "name": "reconstruir",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Reconstruir"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadoEtl"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analitica/agencias/{agencia_id}/demanda": {
+      "get": {
+        "tags": [
+          "demanda"
+        ],
+        "summary": "Calendario",
+        "operationId": "calendario_api_v1_analitica_agencias__agencia_id__demanda_get",
+        "parameters": [
+          {
+            "name": "agencia_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agencia Id"
+            }
+          },
+          {
+            "name": "mes",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$",
+              "title": "Mes"
+            }
+          },
+          {
+            "name": "departamento",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Departamento"
+            }
+          },
+          {
+            "name": "municipio",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Municipio"
+            }
+          },
+          {
+            "name": "activa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Activa"
+            }
+          },
+          {
+            "name": "servicioId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Servicioid"
+            }
+          },
+          {
+            "name": "servicioActivo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Servicioactivo"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalendarioDemanda"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analitica/agencias/{agencia_id}/eventos": {
+      "post": {
+        "tags": [
+          "demanda"
+        ],
+        "summary": "Crear Evento",
+        "operationId": "crear_evento_api_v1_analitica_agencias__agencia_id__eventos_post",
+        "parameters": [
+          {
+            "name": "agencia_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agencia Id"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NuevoEvento"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventoAgencia"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analitica/agencias/{agencia_id}/eventos/{evento_id}": {
+      "patch": {
+        "tags": [
+          "demanda"
+        ],
+        "summary": "Editar Evento",
+        "operationId": "editar_evento_api_v1_analitica_agencias__agencia_id__eventos__evento_id__patch",
+        "parameters": [
+          {
+            "name": "agencia_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agencia Id"
+            }
+          },
+          {
+            "name": "evento_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Evento Id"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CambiosEvento"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventoAgencia"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "demanda"
+        ],
+        "summary": "Eliminar Evento",
+        "operationId": "eliminar_evento_api_v1_analitica_agencias__agencia_id__eventos__evento_id__delete",
+        "parameters": [
+          {
+            "name": "agencia_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agencia Id"
+            }
+          },
+          {
+            "name": "evento_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Evento Id"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analitica/tablero": {
+      "post": {
+        "tags": [
+          "demanda"
+        ],
+        "summary": "Tablero",
+        "operationId": "tablero_api_v1_analitica_tablero_post",
+        "parameters": [
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitudTablero"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TableroDemanda"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analitica/filtros": {
+      "post": {
+        "tags": [
+          "demanda"
+        ],
+        "summary": "Filtros",
+        "operationId": "filtros_api_v1_analitica_filtros_post",
+        "parameters": [
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaFiltros"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistorialFiltros"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActividadFiltro": {
+        "properties": {
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Agenciaid"
+          },
+          "servicioId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Servicioid"
+          },
+          "colaboradorId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Colaboradorid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "agenciaId",
+          "servicioId",
+          "colaboradorId"
+        ],
+        "title": "ActividadFiltro"
+      },
+      "AgenciaTablero": {
+        "properties": {
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Agenciaid"
+          },
+          "nombre": {
+            "type": "string",
+            "title": "Nombre"
+          },
+          "departamento": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Departamento"
+          },
+          "municipio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Municipio"
+          },
+          "activa": {
+            "type": "boolean",
+            "title": "Activa",
+            "default": true
+          },
+          "servicioActivo": {
+            "type": "boolean",
+            "title": "Servicioactivo",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "agenciaId",
+          "nombre"
+        ],
+        "title": "AgenciaTablero"
+      },
+      "CalendarioDemanda": {
+        "properties": {
+          "agenciaId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agenciaid"
+          },
+          "mes": {
+            "type": "string",
+            "title": "Mes"
+          },
+          "fuente": {
+            "type": "string",
+            "enum": [
+              "REAL",
+              "SIMULADA"
+            ],
+            "title": "Fuente"
+          },
+          "estadoPronostico": {
+            "type": "string",
+            "enum": [
+              "DISPONIBLE",
+              "HISTORIAL_INSUFICIENTE",
+              "SOLO_CALENDARIO",
+              "INCOMPLETO"
+            ],
+            "title": "Estadopronostico"
+          },
+          "dias": {
+            "items": {
+              "$ref": "#/components/schemas/DiaDemanda"
+            },
+            "type": "array",
+            "title": "Dias"
+          }
+        },
+        "type": "object",
+        "required": [
+          "agenciaId",
+          "mes",
+          "fuente",
+          "estadoPronostico",
+          "dias"
+        ],
+        "title": "CalendarioDemanda"
+      },
+      "CambiosEvento": {
+        "properties": {
+          "fecha": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fecha"
+          },
+          "tipo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "FESTIVO_LOCAL",
+                  "PAGO_SUBSIDIO_FAMILIAR",
+                  "PAGO_NOMINA"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tipo"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "CambiosEvento"
+      },
+      "ConsultaFiltros": {
+        "properties": {
+          "desde": {
+            "type": "string",
+            "format": "date",
+            "title": "Desde"
+          },
+          "hasta": {
+            "type": "string",
+            "format": "date",
+            "title": "Hasta"
+          },
+          "agenciaIds": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Agenciaids"
+          },
+          "servicioId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Servicioid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "desde",
+          "hasta",
+          "agenciaIds"
+        ],
+        "title": "ConsultaFiltros"
+      },
+      "DiaDemanda": {
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "title": "Fecha"
+          },
+          "diaHabil": {
+            "type": "boolean",
+            "title": "Diahabil"
+          },
+          "finDeSemana": {
+            "type": "boolean",
+            "title": "Findesemana"
+          },
+          "festivoNacional": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Festivonacional"
+          },
+          "festivosPutumayo": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Festivosputumayo"
+          },
+          "vencimientoCredito": {
+            "type": "boolean",
+            "title": "Vencimientocredito"
+          },
+          "eventos": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/EventoCalendario"
+                },
+                {
+                  "$ref": "#/components/schemas/EventoAgencia"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Eventos"
+          },
+          "turnosRegistrados": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Turnosregistrados"
+          },
+          "turnosEstimados": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Turnosestimados"
+          },
+          "nivelDemanda": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "BAJA",
+                  "MEDIA",
+                  "ALTA"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Niveldemanda"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fecha",
+          "diaHabil",
+          "finDeSemana",
+          "festivoNacional",
+          "festivosPutumayo",
+          "vencimientoCredito",
+          "eventos",
+          "turnosRegistrados",
+          "turnosEstimados",
+          "nivelDemanda"
+        ],
+        "title": "DiaDemanda"
+      },
+      "Estimacion": {
+        "properties": {
+          "esperaMin": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Esperamin"
+          },
+          "tAtencionMin": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tatencionmin"
+          },
+          "pPreferencial": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ppreferencial"
+          }
+        },
+        "type": "object",
+        "required": [
+          "esperaMin",
+          "tAtencionMin",
+          "pPreferencial"
+        ],
+        "title": "Estimacion"
+      },
+      "EventoAgencia": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "title": "Fecha"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "FESTIVO_LOCAL",
+              "PAGO_SUBSIDIO_FAMILIAR",
+              "PAGO_NOMINA"
+            ],
+            "title": "Tipo"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "fecha",
+          "tipo"
+        ],
+        "title": "EventoAgencia"
+      },
+      "EventoCalendario": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "title": "Fecha"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "FESTIVO_LOCAL",
+              "PAGO_SUBSIDIO_FAMILIAR",
+              "PAGO_NOMINA"
+            ],
+            "title": "Tipo"
+          },
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Agenciaid"
+          },
+          "agenciaNombre": {
+            "type": "string",
+            "title": "Agencianombre"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "fecha",
+          "tipo",
+          "agenciaId",
+          "agenciaNombre"
+        ],
+        "title": "EventoCalendario"
+      },
+      "FranjaRecomendada": {
+        "properties": {
+          "franja": {
+            "type": "string",
+            "title": "Franja",
+            "examples": [
+              "10:00"
+            ]
+          },
+          "esperaMedianaMin": {
+            "type": "number",
+            "title": "Esperamedianamin"
+          },
+          "turnos": {
+            "type": "integer",
+            "title": "Turnos"
+          }
+        },
+        "type": "object",
+        "required": [
+          "franja",
+          "esperaMedianaMin",
+          "turnos"
+        ],
+        "title": "FranjaRecomendada"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HistorialFiltros": {
+        "properties": {
+          "opciones": {
+            "items": {
+              "$ref": "#/components/schemas/ActividadFiltro"
+            },
+            "type": "array",
+            "title": "Opciones"
+          }
+        },
+        "type": "object",
+        "required": [
+          "opciones"
+        ],
+        "title": "HistorialFiltros"
+      },
+      "Indicadores": {
+        "properties": {
+          "atendidos": {
+            "type": "integer",
+            "title": "Atendidos"
+          },
+          "cancelados": {
+            "type": "integer",
+            "title": "Cancelados"
+          },
+          "ausentes": {
+            "type": "integer",
+            "title": "Ausentes"
+          },
+          "esperaPromedioMin": {
+            "type": "number",
+            "title": "Esperapromediomin"
+          },
+          "atencionPromedioMin": {
+            "type": "number",
+            "title": "Atencionpromediomin"
+          },
+          "proporcionPreferencial": {
+            "type": "number",
+            "title": "Proporcionpreferencial"
+          },
+          "solicitados": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Solicitados"
+          },
+          "pendientes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pendientes"
+          },
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Agenciaid"
+          },
+          "desde": {
+            "type": "string",
+            "format": "date",
+            "title": "Desde"
+          },
+          "hasta": {
+            "type": "string",
+            "format": "date",
+            "title": "Hasta"
+          },
+          "fuente": {
+            "type": "string",
+            "enum": [
+              "REAL",
+              "SIMULADA"
+            ],
+            "title": "Fuente",
+            "default": "REAL"
+          },
+          "actualizadoEn": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actualizadoen"
+          }
+        },
+        "type": "object",
+        "required": [
+          "atendidos",
+          "cancelados",
+          "ausentes",
+          "esperaPromedioMin",
+          "atencionPromedioMin",
+          "proporcionPreferencial",
+          "agenciaId",
+          "desde",
+          "hasta"
+        ],
+        "title": "Indicadores"
+      },
+      "IndicadoresAgencia": {
+        "properties": {
+          "atendidos": {
+            "type": "integer",
+            "title": "Atendidos"
+          },
+          "cancelados": {
+            "type": "integer",
+            "title": "Cancelados"
+          },
+          "ausentes": {
+            "type": "integer",
+            "title": "Ausentes"
+          },
+          "esperaPromedioMin": {
+            "type": "number",
+            "title": "Esperapromediomin"
+          },
+          "atencionPromedioMin": {
+            "type": "number",
+            "title": "Atencionpromediomin"
+          },
+          "proporcionPreferencial": {
+            "type": "number",
+            "title": "Proporcionpreferencial"
+          },
+          "solicitados": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Solicitados"
+          },
+          "pendientes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pendientes"
+          },
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Agenciaid"
+          },
+          "nombre": {
+            "type": "string",
+            "title": "Nombre"
+          },
+          "disponible": {
+            "type": "boolean",
+            "title": "Disponible"
+          }
+        },
+        "type": "object",
+        "required": [
+          "atendidos",
+          "cancelados",
+          "ausentes",
+          "esperaPromedioMin",
+          "atencionPromedioMin",
+          "proporcionPreferencial",
+          "agenciaId",
+          "nombre",
+          "disponible"
+        ],
+        "title": "IndicadoresAgencia"
+      },
+      "NuevoEvento": {
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "title": "Fecha"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "FESTIVO_LOCAL",
+              "PAGO_SUBSIDIO_FAMILIAR",
+              "PAGO_NOMINA"
+            ],
+            "title": "Tipo"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "fecha",
+          "tipo"
+        ],
+        "title": "NuevoEvento"
+      },
+      "ParametrosEspera": {
+        "properties": {
+          "tAtencionMin": {
+            "type": "number",
+            "title": "Tatencionmin"
+          },
+          "pPreferencial": {
+            "type": "number",
+            "title": "Ppreferencial"
+          },
+          "muestras": {
+            "type": "integer",
+            "title": "Muestras"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tAtencionMin",
+          "pPreferencial",
+          "muestras"
+        ],
+        "title": "ParametrosEspera",
+        "description": "t̄ y p de la fórmula de espera para una fila y una franja."
+      },
+      "Recomendacion": {
+        "properties": {
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Agenciaid"
+          },
+          "servicioId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Servicioid"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "title": "Fecha"
+          },
+          "tipoDia": {
+            "type": "string",
+            "title": "Tipodia"
+          },
+          "franjas": {
+            "items": {
+              "$ref": "#/components/schemas/FranjaRecomendada"
+            },
+            "type": "array",
+            "title": "Franjas"
+          }
+        },
+        "type": "object",
+        "required": [
+          "agenciaId",
+          "servicioId",
+          "fecha",
+          "tipoDia",
+          "franjas"
+        ],
+        "title": "Recomendacion"
+      },
+      "ResultadoEtl": {
+        "properties": {
+          "eventosLeidos": {
+            "type": "integer",
+            "title": "Eventosleidos"
+          },
+          "filas": {
+            "type": "integer",
+            "title": "Filas"
+          },
+          "hechosCargados": {
+            "type": "integer",
+            "title": "Hechoscargados"
+          },
+          "procesos": {
+            "type": "integer",
+            "title": "Procesos"
+          },
+          "duracionMs": {
+            "type": "integer",
+            "title": "Duracionms"
+          }
+        },
+        "type": "object",
+        "required": [
+          "eventosLeidos",
+          "filas",
+          "hechosCargados",
+          "procesos",
+          "duracionMs"
+        ],
+        "title": "ResultadoEtl"
+      },
+      "SolicitudEstimacion": {
+        "properties": {
+          "agenciaId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Agenciaid"
+          },
+          "servicioId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Servicioid"
+          },
+          "franja": {
+            "type": "string",
+            "pattern": "^\\d{2}:(00|30)$",
+            "title": "Franja"
+          },
+          "personasDelante": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Personasdelante"
+          },
+          "ventanillas": {
+            "type": "integer",
+            "minimum": 1,
+            "title": "Ventanillas"
+          },
+          "maxPreferencialesSeguidos": {
+            "type": "integer",
+            "maximum": 10,
+            "minimum": 1,
+            "title": "Maxpreferencialesseguidos",
+            "default": 2
+          },
+          "tipoAtencion": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "PREFERENCIAL"
+            ],
+            "title": "Tipoatencion",
+            "default": "GENERAL"
+          }
+        },
+        "type": "object",
+        "required": [
+          "agenciaId",
+          "servicioId",
+          "franja",
+          "personasDelante",
+          "ventanillas"
+        ],
+        "title": "SolicitudEstimacion"
+      },
+      "SolicitudTablero": {
+        "properties": {
+          "mes": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$",
+            "title": "Mes"
+          },
+          "agencias": {
+            "items": {
+              "$ref": "#/components/schemas/AgenciaTablero"
+            },
+            "type": "array",
+            "title": "Agencias"
+          },
+          "agenciaId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agenciaid"
+          },
+          "servicioId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Servicioid"
+          },
+          "colaboradorId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Colaboradorid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mes",
+          "agencias"
+        ],
+        "title": "SolicitudTablero"
+      },
+      "TableroDemanda": {
+        "properties": {
+          "fuente": {
+            "type": "string",
+            "enum": [
+              "REAL",
+              "SIMULADA"
+            ],
+            "title": "Fuente"
+          },
+          "actualizadoEn": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actualizadoen"
+          },
+          "desde": {
+            "type": "string",
+            "format": "date",
+            "title": "Desde"
+          },
+          "hasta": {
+            "type": "string",
+            "format": "date",
+            "title": "Hasta"
+          },
+          "resumen": {
+            "$ref": "#/components/schemas/ValoresIndicadores"
+          },
+          "agencias": {
+            "items": {
+              "$ref": "#/components/schemas/IndicadoresAgencia"
+            },
+            "type": "array",
+            "title": "Agencias"
+          },
+          "calendario": {
+            "$ref": "#/components/schemas/CalendarioDemanda"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fuente",
+          "actualizadoEn",
+          "desde",
+          "hasta",
+          "resumen",
+          "agencias",
+          "calendario"
+        ],
+        "title": "TableroDemanda"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "ValoresIndicadores": {
+        "properties": {
+          "atendidos": {
+            "type": "integer",
+            "title": "Atendidos"
+          },
+          "cancelados": {
+            "type": "integer",
+            "title": "Cancelados"
+          },
+          "ausentes": {
+            "type": "integer",
+            "title": "Ausentes"
+          },
+          "esperaPromedioMin": {
+            "type": "number",
+            "title": "Esperapromediomin"
+          },
+          "atencionPromedioMin": {
+            "type": "number",
+            "title": "Atencionpromediomin"
+          },
+          "proporcionPreferencial": {
+            "type": "number",
+            "title": "Proporcionpreferencial"
+          },
+          "solicitados": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Solicitados"
+          },
+          "pendientes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pendientes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "atendidos",
+          "cancelados",
+          "ausentes",
+          "esperaPromedioMin",
+          "atencionPromedioMin",
+          "proporcionPreferencial"
+        ],
+        "title": "ValoresIndicadores"
+      }
+    }
+  }
+}
