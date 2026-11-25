@@ -1,190 +1,65 @@
-PASS test/administracion/gestionar-agencias.spec.ts (8.952 s)
-  Parámetros de la agencia (dominio)
-    √ valida rangos, horas en punto o y media y el ámbito global de la edad (66 ms)
-    √ el valor efectivo es el de la agencia, si no el global y si no el de fábrica (9 ms)
-  RF-17, CU-05: gestión de la agencia
-    √ el directivo cambia las ventanillas de su agencia: se invalida la caché y se audita el antes y el después (12 ms)
-    √ PR-16: no administra otra agencia; el intento queda auditado (11 ms)
-    √ cambia el horario solo si la apertura queda antes del cierre (1 ms)
-    √ la edad de adulto mayor no se cambia por agencia
-    √ restablecer un parámetro vuelve al valor global (1 ms)
-    √ solo el superadministrador cambia parámetros globales y cierra agencias (2 ms)
-    √ un servicio que la agencia no tiene es 404 (1 ms)
+# backend-principal · 2026-11-24 15:25 · commit de las pruebas: f030d57 (main)
 
-PASS test/espera-ventanillas.spec.ts (9.906 s)
-  S1-04: las ventanillas que define la agencia cambian la espera estimada
-    √ con una ventanilla en vez de dos, la misma persona espera el doble (278 ms)
+> backend-principal@1.0.0 test
+> npm run test:unit && npm run test:integracion
 
-PASS test/llamar-siguiente.spec.ts (10.208 s)
-  Caso de uso LlamarSiguiente
-    √ llama primero al preferencial y luego al general (RN-08) (52 ms)
-    √ un funcionario de otra agencia no puede llamar (RN-14) (2 ms)
-    √ ConsultarMiTurno combina la posición del motor y los datos de la analítica (65 ms)
 
-PASS test/vencimientos.spec.ts (10.023 s)
-  S1-06: vencimientos de turnos (RN-10, RN-11)
-    √ RN-10: un turno Próximo sin confirmar queda ausente a los 5 minutos, sale de la fila y el asociado recibe el aviso (88 ms)
-    √ confirmar a tiempo detiene el plazo de confirmación (4 ms)
-    √ RN-11: un turno llamado que no pasa a la ventanilla en 3 minutos queda ausente (3 ms)
-    √ cuando la fila avanza, el turno que queda con 3 personas delante pasa a Próximo y recibe el aviso (10 ms)
-    √ si otra instancia tiene el cerrojo, este ciclo no toca nada (3 ms)
-    √ si el asociado confirma en el mismo instante, gana su acción y el turno sigue en la fila (5 ms)
+> backend-principal@1.0.0 test:unit
+> jest
 
-PASS test/solicitar-turno.spec.ts (10.064 s)
-  Caso de uso SolicitarTurno con adaptadores en memoria
-    √ PR-03: crea el turno, lo encola, publica sus eventos y avisa a la fila (113 ms)
-    √ PR-04: un segundo turno activo del mismo asociado devuelve conflicto (RN-01) (3 ms)
-    √ la misma Idempotency-Key devuelve el mismo turno sin encolar otro (2 ms)
-    √ un adulto mayor queda en la fila preferencial (RN-05) (2 ms)
-    √ rechaza turnos fuera del horario de atención (RN-03) (2 ms)
-    √ si el motor de filas falla, cancela el turno y permite pedir otro (6 ms)
-    √ un asociado no puede cancelar el turno de otro (RN-14) (2 ms)
-
-PASS test/turno.spec.ts (9.919 s)
-  Turno: máquina de estados (RN-04)
-    √ PR-01: recorre el ciclo completo y registra un evento por transición (47 ms)
-    √ PR-02: rechaza una transición inválida (finalizar un turno en espera) (22 ms)
-    √ no permite cancelar un turno que ya fue llamado (3 ms)
-    √ llamar un turno en espera pasa primero por Próximo (1 ms)
-    √ cancelar dos veces es idempotente y libera la regla del turno activo (1 ms)
-    √ un preferencial no verificado vuelve a la fila general (RN-07) (2 ms)
-    √ solo confirma presencia un turno próximo o llamado (RN-10) (2 ms)
-
-PASS test/analitica/consultar-indicadores.spec.ts (9.811 s)
-  RF-19: indicadores con el ámbito del administrador
-    √ el superadministrador ve todas las agencias y el total ponderado (61 ms)
-    √ por defecto toma los últimos 30 días hasta hoy en Colombia (2 ms)
-    √ el directivo de Mocoa solo ve Mocoa (1 ms)
-    √ PR-16: pedir los indicadores de otra agencia es 403 y queda en la auditoría (2 ms)
-    √ si la analítica no responde para una agencia, las demás se muestran y el total la excluye (2 ms)
-    √ la segunda consulta sale de la caché (9 ms)
-    √ valida el rango y la agencia (6 ms)
-    √ un rol sin agencias administradas no tiene indicadores (1 ms)
-    √ el total de una lista vacía es cero (1 ms)
-
-PASS test/administracion/cerrar-agencia.spec.ts (10.367 s)
-  RN-13: cierre de la jornada de una agencia
-    √ cancela los pendientes con motivo cierre, vacía el motor y avisa a cada asociado; el llamado sigue (150 ms)
-    √ cerrar dos veces no cambia nada la segunda vez (7 ms)
-    √ un directivo no cierra otra agencia y queda auditado (7 ms)
-    √ si el motor no responde no cancela nada (un turno cancelado no puede quedar en una cola) (6 ms)
-    √ cerrada antes de la hora, la agencia no recibe turnos nuevos hoy; las demás sí (12 ms)
-    √ reabrir deshace el cierre anticipado y queda auditado; reabrir otra vez no hace nada (13 ms)
-    √ el cierre automático no repite el de una agencia que el directivo ya cerró hoy (7 ms)
-    √ el cierre automático corre a la hora de cierre de cada agencia, una sola vez por día (8 ms)
-    √ desactivar una agencia desde la gestión también cierra su jornada (11 ms)
-
-PASS test/politica-preferencial.spec.ts
-  PR-05: política de atención preferencial (RN-05, RN-06)
-    √ un asociado de 60 años es preferencial (1 ms)
-    √ un asociado que cumple 60 mañana todavía es general (1 ms)
-    √ la autodeclaración de gestante o discapacidad lo hace preferencial
-    √ sin fecha de nacimiento ni autodeclaración es general
-    √ calcula la edad en años cumplidos
-
-PASS test/auditoria/consultar-auditoria.spec.ts (10.688 s)
-  RF-20, CU-06: consulta de la auditoría
-    √ el superadministrador ve el día de hoy con el nombre de quien actuó (130 ms)
-    √ pasa el filtro de acción, la página siguiente y limita el tamaño a 200 (30 ms)
-    √ solo el superadministrador la consulta (14 ms)
-    √ rechaza días futuros, fechas mal escritas y agencias que no existen (6 ms)
-    √ por persona usa el mes actual y valida el formato (17 ms)
-
+PASS test/administracion/cerrar-agencia.spec.ts (7.553 s)
+PASS test/medicion-paralelismo.spec.ts (7.997 s)
+PASS test/turnos-trabados.spec.ts
+PASS test/vencimientos.spec.ts (8.488 s)
+PASS test/solicitar-turno.spec.ts
+PASS test/turno.spec.ts
 PASS test/estimacion-y-contrasena.spec.ts
-  Estimación de espera
-    √ aplica n · t̄ / (v · (1 − p)) (1 ms)
-    √ un turno preferencial no espera por los preferenciales que lleguen (p = 0) (1 ms)
-    √ limita p a K / (K + 1)
-    √ la franja de 30 minutos usa la hora de Colombia (1 ms)
-  Política de contraseñas (NIST SP 800-63B-4)
-    √ sin MFA exige 15 caracteres (1 ms)
-    √ con MFA bastan 8 caracteres (1 ms)
-    √ acepta frases de 64 caracteres y rechaza contraseñas comunes (1 ms)
-
+PASS test/administracion/gestionar-agencias.spec.ts
+PASS test/administracion/administrar-usuarios.spec.ts (8.844 s)
+PASS test/consultar-fila.spec.ts
+PASS test/identidad/cuentas-y-federado.spec.ts (8.871 s)
+PASS test/identidad/totp-y-cifrado.spec.ts
 PASS test/analitica/consultar-recomendaciones.spec.ts
-  RF-10: recomendación de horario
-    √ para hoy quita las franjas que ya pasaron y las que caen fuera del horario (23 ms)
-    √ para mañana conserva las franjas de la mañana (23 ms)
-    √ la segunda consulta sale de la caché (15 min) sin llamar a la analítica (28 ms)
-    √ si la analítica no responde, avisa que no está disponible y no guarda nada (16 ms)
-    √ sin historial suficiente responde una lista vacía (1 ms)
-    √ rechaza una fila que la agencia no ofrece y fechas pasadas o lejanas (9 ms)
-    √ a las 23:30 de Colombia, "hoy" sigue siendo el día local y no el de UTC (6 ms)
+PASS test/politica-preferencial.spec.ts
+PASS test/llamar-siguiente.spec.ts
+PASS test/analitica/consultar-indicadores.spec.ts (8.921 s)
+PASS test/espera-ventanillas.spec.ts
+PASS test/identidad/autenticacion.spec.ts (9.189 s)
+PASS test/turnos-simultaneos.spec.ts (9.41 s)
+PASS test/auditoria/consultar-auditoria.spec.ts (9.471 s)
+PASS test/confirmacion.spec.ts (9.561 s)
+PASS test/analitica/gestionar-demanda.spec.ts (10.125 s)
 
-PASS test/administracion/administrar-usuarios.spec.ts (11.043 s)
-  Política de administración (RN-15)
-    √ el administrador de agencia solo asigna funcionarios de su agencia (9 ms)
-    √ valida el ámbito de cada rol (34 ms)
-    √ no gestiona a quien también es funcionario de otra agencia (1 ms)
-  Administración de usuarios (RF-18, CU-05, CU-06)
-    √ el directivo de una agencia crea un funcionario de su agencia y le llega la activación (11 ms)
-    √ PR-16: un administrador no crea ni asigna fuera de su agencia y queda auditado (3 ms)
-    √ el administrador de agencia solo lista usuarios de su agencia (2 ms)
-    √ el superadministrador nombra un directivo de agencia; al desactivarlo se cierran sus sesiones (5 ms)
-    √ nadie se desactiva a sí mismo ni deja el sistema sin superadministrador (3 ms)
-    √ no deja a una persona sin roles: se desactiva la cuenta (1 ms)
-
-PASS test/identidad/totp-y-cifrado.spec.ts (10.658 s)
-  TOTP (RFC 6238)
-    √ en el segundo 59 el código es 94287082 (11 ms)
-    √ en el segundo 1111111109 el código es 07081804
-    √ en el segundo 1234567890 el código es 89005924 (1 ms)
-    √ en el segundo 2000000000 el código es 69279037
-    √ base32 ida y vuelta (4 ms)
-    √ acepta ±30 s de diferencia de reloj y rechaza más (1 ms)
-  Cifrado de los secretos MFA (AES-256-GCM)
-    √ descifra lo que cifra y cada cifrado es distinto (IV aleatorio) (19 ms)
-    √ detecta un texto cifrado alterado (13 ms)
-    √ rechaza una clave que no mide 32 bytes (9 ms)
-
-PASS test/identidad/cuentas-y-federado.spec.ts
-  Registro de asociados y verificación de correo
-    √ crea un asociado sin verificar, envía el enlace y al abrirlo puede ingresar (5 ms)
-    √ rechaza una clave corta y un correo repetido (2 ms)
-  Recuperación de contraseña (RF-04)
-    √ el enlace sirve una sola vez, cambia la clave y cierra las demás sesiones (3 ms)
-    √ vence a los 15 minutos y solo vale el último enlace enviado (1 ms)
-    √ con un correo que no existe no envía nada ni revela nada (1 ms)
-  Inicio con Google (RF-02)
-    √ una cuenta de Google nueva se crea como asociado sin documento (1 ms)
-    √ el state no se puede reutilizar (1 ms)
-    √ al vincular una cuenta local sin verificar borra su contraseña (pudo crearla otra persona) (1 ms)
-    √ en el móvil entrega un código de un minuto que se canjea una sola vez (1 ms)
-
-PASS test/identidad/autenticacion.spec.ts
-  Inicio de sesión local (RF-01, CU-01)
-    √ un asociado con la clave correcta abre sesión solo con contraseña (1 ms)
-    √ PR-17: cinco intentos fallidos bloquean el sexto con 429, aunque la clave sea correcta (1 ms)
-    √ no dice si el correo existe: mismo error para cuenta inexistente y clave equivocada (11 ms)
-    √ exige confirmar el correo antes del primer ingreso
-    √ una cuenta desactivada no entra
-  MFA para administradores (RF-03)
-    √ un administrador de agencia sin MFA debe configurarlo antes de entrar (326 ms)
-    √ el superadministrador cambia la clave temporal y luego configura MFA (1 ms)
-    √ rechaza un código ya usado y anula el reto tras cinco códigos malos (2 ms)
-  Sesiones (RF-05)
-    √ la renovación rota: el token anterior deja de servir
-    √ si le asignan un rol administrativo, la sesión sin MFA no se renueva (1 ms)
-    √ cerrar sesión borra la renovación y revoca el token de acceso
-
-Test Suites: 16 passed, 16 total
-Tests:       113 passed, 113 total
+Test Suites: 22 passed, 22 total
+Tests:       172 passed, 172 total
 Snapshots:   0 total
-Time:        13.253 s, estimated 21 s
+Time:        11.073 s, estimated 12 s
 Ran all test suites.
-exit_unit=0
-PASS test/integracion/turnos-http.int-spec.ts (11.106 s)
+
+> backend-principal@1.0.0 test:integracion
+> jest --config test/integracion/jest.config.json --runInBand
+
+PASS test/integracion/turnos-http.int-spec.ts (10.224 s)
   Turnos por HTTP con PostgreSQL y Redis reales
+    √ siembra identidades, historial y pendientes demo, permite atender un pendiente y limpia todo (1562 ms)
     PR-14 (extremo a extremo): un asociado no puede cancelar un turno ajeno
-      √ responde 404 sin revelar el turno, y el turno del otro asociado sigue en la fila (202 ms)
-      √ sin sesión responde 401 y con otro rol 403, antes de llegar al caso de uso (27 ms)
+      √ responde 404 sin revelar el turno, y el turno del otro asociado sigue en la fila (44 ms)
+      √ sin sesión responde 401 y con otro rol 403, antes de llegar al caso de uso (19 ms)
+    RN-10: confirmación del turno
+      √ «mi turno» la informa a cualquier dispositivo y fuera de plazo responde 422 (30 ms)
     PR-15 (integración): dos solicitudes simultáneas del mismo asociado
-      √ una entra (201) y la otra recibe 409 TURNO_ACTIVO; en PostgreSQL queda un solo turno activo (202 ms)
-      √ la misma solicitud repetida a la vez (misma Idempotency-Key) devuelve el mismo turno, no un error (26 ms)
+      √ una entra (201) y la otra recibe 409 TURNO_ACTIVO; en PostgreSQL queda un solo turno activo (147 ms)
+      √ la misma solicitud repetida a la vez (misma Idempotency-Key) devuelve el mismo turno, no un error (16 ms)
+    Turnos trabados (RN-13, CU-04)
+      √ recupera la ventanilla, no deja llamar otro y cierra la atención olvidada de otro día (47 ms)
+      √ cancela en PostgreSQL un pendiente de otro día y el asociado puede pedir de nuevo (54 ms)
+    Listados paginados
+      √ pagina usuarios filtrados y conserva el total al pedir una página vacía (17 ms)
+      √ lee la fila por páginas y aplica el ámbito del funcionario sin llamar los turnos (34 ms)
+      √ mantiene el tablero sin paginar para clientes existentes y limita el listado cuando se solicita (16 ms)
 
 Test Suites: 1 passed, 1 total
-Tests:       4 passed, 4 total
+Tests:       11 passed, 11 total
 Snapshots:   0 total
-Time:        11.363 s, estimated 19 s
+Time:        10.442 s, estimated 11 s
 Ran all test suites.
-exit_integracion=0

@@ -1,14 +1,15 @@
 # Evidencia de las pruebas (sección 9 del informe)
 
-Salida completa de las pruebas automatizadas de cada repositorio, corridas el 17 de noviembre de
-2026 sobre la rama `main` de cada uno. Las 17 pruebas del plan (PR-01 a PR-17) pasan.
+Salida completa de las pruebas automatizadas de cada repositorio, corridas el 24 de noviembre de
+2026 sobre la rama `main` de cada uno: **276 pruebas, todas pasan**. Las 17 pruebas del plan
+(PR-01 a PR-17) están entre ellas.
 
 | Repositorio | Commit | Comando | Resultado | Archivo |
 |---|---|---|---|---|
-| backend-principal | `1c75398` | `npm test` (unitarias + integración con Docker) | 113 + 4 pasan | [backend-principal-npm-test.txt](backend-principal-npm-test.txt) |
-| motor-filas | `05776ee` | `mvn test` (Redis con Testcontainers) | 10 pasan, 0 omitidas | [motor-filas-mvn-test.txt](motor-filas-mvn-test.txt) |
-| analitica | `116f6dc` | `pytest -v` | 14 pasan | [analitica-pytest.txt](analitica-pytest.txt) |
-| web | `b9e92b7` | `vitest run` | 22 pasan | [web-vitest.txt](web-vitest.txt) |
+| backend-principal | `f030d57` | `npm test` (unitarias + integración con Docker) | 172 + 11 pasan | [backend-principal-npm-test.txt](backend-principal-npm-test.txt) |
+| motor-filas | `cd2ff30` | `mvn test` (Redis con Testcontainers) | 11 pasan, 0 omitidas | [motor-filas-mvn-test.txt](motor-filas-mvn-test.txt) |
+| analitica | `5557597` | `pytest -v` | 50 pasan | [analitica-pytest.txt](analitica-pytest.txt) |
+| web | `837d35d` | `vitest run` | 32 pasan | [web-vitest.txt](web-vitest.txt) |
 
 Entorno: Windows 11, Docker 29.4.2, Node 24.14.1, Python 3.12.0, Maven 3.9.9 con Temurin 21 (imagen
 oficial de Docker). La app móvil no tiene pruebas automatizadas en el plan.

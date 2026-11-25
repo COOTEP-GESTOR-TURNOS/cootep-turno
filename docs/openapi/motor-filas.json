@@ -1,0 +1,505 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "filas",
+      "description": "Operaciones atómicas sobre las filas en Redis"
+    }
+  ],
+  "paths": {
+    "/api/v1/filas/{filaId}/turnos": {
+      "get": {
+        "tags": [
+          "filas"
+        ],
+        "summary": "Consulta una página de turnos en espera según la regla K",
+        "operationId": "listar",
+        "parameters": [
+          {
+            "name": "filaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F-]{36}:[0-9a-fA-F-]{36}$"
+            }
+          },
+          {
+            "name": "k",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 2,
+              "maximum": 10,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pagina",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "tamano",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaFilaResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "filas"
+        ],
+        "summary": "Encola un turno; idempotente por turnoId",
+        "operationId": "encolar",
+        "parameters": [
+          {
+            "name": "filaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F-]{36}:[0-9a-fA-F-]{36}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EncolarRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/EncolarResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/filas/{filaId}/siguiente": {
+      "post": {
+        "tags": [
+          "filas"
+        ],
+        "summary": "Entrega el siguiente turno según la regla K; 204 si la fila está vacía",
+        "operationId": "siguiente",
+        "parameters": [
+          {
+            "name": "filaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F-]{36}:[0-9a-fA-F-]{36}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SiguienteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiguienteResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/agencias/{agenciaId}/cierre": {
+      "post": {
+        "tags": [
+          "agencias"
+        ],
+        "summary": "Vacía en paralelo las filas de la agencia y devuelve los turnos retirados (RN-13)",
+        "operationId": "cerrar",
+        "parameters": [
+          {
+            "name": "agenciaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CierreRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CierreResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/filas/{filaId}": {
+      "get": {
+        "tags": [
+          "filas"
+        ],
+        "summary": "Tamaño de cada subfila y racha de preferenciales",
+        "operationId": "estado",
+        "parameters": [
+          {
+            "name": "filaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F-]{36}:[0-9a-fA-F-]{36}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstadoFilaResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/filas/{filaId}/turnos/{turnoId}/posicion": {
+      "get": {
+        "tags": [
+          "filas"
+        ],
+        "summary": "Personas delante de un turno; 404 si no está en la fila",
+        "operationId": "posicion",
+        "parameters": [
+          {
+            "name": "filaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F-]{36}:[0-9a-fA-F-]{36}$"
+            }
+          },
+          {
+            "name": "turnoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "k",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 2,
+              "maximum": 10,
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PosicionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/filas/{filaId}/turnos/{turnoId}": {
+      "delete": {
+        "tags": [
+          "filas"
+        ],
+        "summary": "Retira un turno cancelado o ausente; idempotente",
+        "operationId": "retirar",
+        "parameters": [
+          {
+            "name": "filaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F-]{36}:[0-9a-fA-F-]{36}$"
+            }
+          },
+          {
+            "name": "turnoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EncolarRequest": {
+        "type": "object",
+        "properties": {
+          "turnoId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tipoAtencion": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "PREFERENCIAL"
+            ]
+          },
+          "maxPreferencialesSeguidos": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 10,
+            "minimum": 1
+          }
+        },
+        "required": [
+          "tipoAtencion",
+          "turnoId"
+        ]
+      },
+      "EncolarResponse": {
+        "type": "object",
+        "properties": {
+          "numero": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tipoAtencion": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "PREFERENCIAL"
+            ]
+          },
+          "personasDelante": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "SiguienteRequest": {
+        "type": "object",
+        "properties": {
+          "maxPreferencialesSeguidos": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 10,
+            "minimum": 1
+          }
+        }
+      },
+      "SiguienteResponse": {
+        "type": "object",
+        "properties": {
+          "turnoId": {
+            "type": "string"
+          },
+          "numero": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tipoAtencion": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "PREFERENCIAL"
+            ]
+          }
+        }
+      },
+      "CierreRequest": {
+        "type": "object",
+        "properties": {
+          "servicioIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "servicioIds"
+        ]
+      },
+      "CierreResponse": {
+        "type": "object",
+        "properties": {
+          "retiradosPorServicio": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "duracionMs": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "EstadoFilaResponse": {
+        "type": "object",
+        "properties": {
+          "preferenciales": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "generales": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rachaPreferencial": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PaginaFilaResponse": {
+        "type": "object",
+        "properties": {
+          "elementos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SiguienteResponse"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tamano": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPaginas": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PosicionResponse": {
+        "type": "object",
+        "properties": {
+          "tipoAtencion": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "PREFERENCIAL"
+            ]
+          },
+          "personasDelante": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    }
+  }
+}

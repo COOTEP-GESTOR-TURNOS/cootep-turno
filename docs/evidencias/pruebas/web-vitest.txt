@@ -1,31 +1,42 @@
+# web · 2026-11-24 15:26 · commit: 837d35d (main)
 
  RUN  v3.2.7 D:/ECOTEP/web
 
- ✓ src/auth/permisos.test.ts > PR-13: rutas por rol > un asociado no puede entrar al panel de administración 1ms
+ ✓ src/auth/permisos.test.ts > PR-13: rutas por rol > un asociado no puede entrar al panel de administración 2ms
  ✓ src/auth/permisos.test.ts > PR-13: rutas por rol > un funcionario puede entrar a su panel 0ms
  ✓ src/auth/permisos.test.ts > PR-13: rutas por rol > cada rol abre su panel inicial 0ms
- ✓ src/auth/permisos.test.ts > PR-13: rutas por rol > el menú solo muestra lo que el rol puede usar 1ms
+ ✓ src/auth/permisos.test.ts > PR-13: rutas por rol > el menú solo muestra lo que el rol puede usar 2ms
  ✓ src/auth/permisos.test.ts > Política de administración en la interfaz (RN-15) > el directivo de agencia solo asigna funcionarios de su agencia 0ms
  ✓ src/api/turnos.test.ts > S1-06: aviso al asociado cuando su turno cambia solo > explica por qué quedó ausente 1ms
  ✓ src/api/turnos.test.ts > S1-06: aviso al asociado cuando su turno cambia solo > RN-13: explica la cancelación por el cierre de la agencia; la del propio asociado no necesita aviso 0ms
  ✓ src/api/turnos.test.ts > S1-06: aviso al asociado cuando su turno cambia solo > avisa cuando queda próximo o lo llaman, y calla en los demás estados 0ms
- ✓ src/api/agenciasAdmin.test.ts > RN-13: resultado del cierre de la jornada > cuenta los cancelados y los que siguen en atención 2ms
- ✓ src/api/agenciasAdmin.test.ts > RF-17: validación de reglas antes de enviar > horas en punto o y media 1ms
- ✓ src/api/agenciasAdmin.test.ts > RF-17: validación de reglas antes de enviar > enteros dentro del rango del parámetro 0ms
- ✓ src/api/catalogo.test.ts > RF-06: catálogo real de agencias y servicios > solo ofrece agencias activas que tienen algún servicio 2ms
+ ✓ src/api/turnos.test.ts > confirmación de asistencia > a quien ya confirmó no le pide confirmar otra vez, en ningún dispositivo 0ms
+ ✓ src/api/turnos.test.ts > confirmación de asistencia > dice cuántas personas faltan antes del turno 0ms
+ ✓ src/api/turnos.test.ts > RN-01: pedir turno con otro activo > nombra el turno que bloquea y dice qué hacer 0ms
+ ✓ src/api/recomendaciones.test.ts > RF-10: mejor hora para ir > hoy y mañana se calculan con la fecha de Colombia, no con la de UTC 22ms
+ ✓ src/api/recomendaciones.test.ts > RF-10: mejor hora para ir > la espera se muestra redondeada y sin prometer exactitud 0ms
+ ✓ src/api/auditoria.test.ts > RF-20: lectura de la auditoría > muestra la hora de Colombia aunque Cassandra guarde UTC 21ms
+ ✓ src/api/auditoria.test.ts > RF-20: lectura de la auditoría > resume el detalle: antes y después, o clave y valor 0ms
+ ✓ src/api/catalogo.test.ts > RF-06: catálogo real de agencias y servicios > solo ofrece agencias activas que tienen algún servicio 1ms
  ✓ src/api/catalogo.test.ts > RF-06: catálogo real de agencias y servicios > los servicios salen de la agencia elegida 0ms
- ✓ src/api/catalogo.test.ts > RF-06: catálogo real de agencias y servicios > al cambiar de agencia conserva el servicio si lo ofrece; si no, toma el primero 1ms
+ ✓ src/api/catalogo.test.ts > RF-06: catálogo real de agencias y servicios > al cambiar de agencia conserva el servicio si lo ofrece; si no, toma el primero 0ms
  ✓ src/api/catalogo.test.ts > RF-06: catálogo real de agencias y servicios > no repite el municipio cuando ya está en el nombre 0ms
  ✓ src/api/catalogo.test.ts > RF-06: catálogo real de agencias y servicios > describe dónde está un turno 0ms
- ✓ src/api/auditoria.test.ts > RF-20: lectura de la auditoría > muestra la hora de Colombia aunque Cassandra guarde UTC 22ms
- ✓ src/api/auditoria.test.ts > RF-20: lectura de la auditoría > resume el detalle: antes y después, o clave y valor 1ms
- ✓ src/api/recomendaciones.test.ts > RF-10: mejor hora para ir > hoy y mañana se calculan con la fecha de Colombia, no con la de UTC 23ms
- ✓ src/api/recomendaciones.test.ts > RF-10: mejor hora para ir > la espera se muestra redondeada y sin prometer exactitud 0ms
- ✓ src/api/indicadores.test.ts > RF-19: tablero de indicadores > los últimos 30 días incluyen hoy y usan la fecha de Colombia 26ms
+ ✓ src/api/agenciasAdmin.test.ts > RN-13: resultado del cierre de la jornada > cuenta los cancelados y los que siguen en atención 1ms
+ ✓ src/api/agenciasAdmin.test.ts > RF-17: validación de reglas antes de enviar > horas en punto o y media 0ms
+ ✓ src/api/agenciasAdmin.test.ts > RF-17: validación de reglas antes de enviar > enteros dentro del rango del parámetro 0ms
+ ✓ src/api/indicadores.test.ts > RF-19: tablero de indicadores > los últimos 30 días incluyen hoy y usan la fecha de Colombia 20ms
  ✓ src/api/indicadores.test.ts > RF-19: tablero de indicadores > porcentajes y totales sin dividir por cero 1ms
+ ✓ src/api/demanda.test.ts > Calendario de demanda > conserva las fechas civiles al ordenar las semanas y cambiar de año 2ms
+ ✓ src/api/demanda.test.ts > Calendario de demanda > distingue el cero observado, la historia ausente y la estimación 4ms
+ ✓ src/api/demanda.test.ts > Calendario de demanda > muestra el cierre sin estimaciones y mantiene el registro histórico 0ms
+ ✓ src/api/demanda.test.ts > Calendario de demanda > muestra las marcas que coinciden en un mismo día, incluidas las de Putumayo 1ms
+ ✓ src/api/demanda.test.ts > Calendario de demanda > consulta por mes y envía los cambios de los eventos a la agencia 3ms
+ ✓ src/api/demanda.test.ts > Calendario de demanda > usa la misma consulta para el calendario, el resumen y el comparativo por ámbito 1ms
+ ✓ src/api/demanda.test.ts > Calendario de demanda > aplica los filtros combinados a los indicadores y pide opciones para el mismo periodo 1ms
 
- Test Files  7 passed (7)
-      Tests  22 passed (22)
-   Start at  00:47:10
-   Duration  699ms (transform 362ms, setup 0ms, collect 779ms, tests 92ms, environment 1ms, prepare 1.39s)
+ Test Files  8 passed (8)
+      Tests  32 passed (32)
+   Start at  15:26:26
+   Duration  680ms (transform 326ms, setup 0ms, collect 724ms, tests 99ms, environment 2ms, prepare 1.47s)
 

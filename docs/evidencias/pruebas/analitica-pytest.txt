@@ -1,30 +1,72 @@
+# analitica · 2026-11-24 15:26 · commit: 5557597 (main)
 ============================= test session starts =============================
 platform win32 -- Python 3.12.0, pytest-8.3.4, pluggy-1.7.0 -- D:\ECOTEP\analitica\.venv\Scripts\python.exe
 rootdir: D:\ECOTEP\analitica
 configfile: pytest.ini
 testpaths: tests
 plugins: anyio-4.16.0
-collecting ... collected 14 items
+collecting ... collected 50 items
 
-tests/test_api.py::test_salud_responde_sin_token PASSED                  [  7%]
-tests/test_api.py::test_sin_token_de_servicio_responde_401_en_formato_rfc_9457 PASSED [ 14%]
-tests/test_api.py::test_con_token_usa_el_servicio_y_devuelve_camel_case PASSED [ 21%]
-tests/test_estimacion.py::test_aplica_la_formula PASSED                  [ 28%]
-tests/test_estimacion.py::test_un_preferencial_no_espera_por_otros_preferenciales PASSED [ 35%]
-tests/test_estimacion.py::test_p_no_supera_k_sobre_k_mas_uno PASSED      [ 42%]
-tests/test_estimacion.py::test_sin_ventanillas_no_hay_estimacion PASSED  [ 50%]
-tests/test_hechos.py::test_turno_atendido_calcula_espera_y_atencion PASSED [ 57%]
-tests/test_hechos.py::test_turno_cancelado_no_tiene_atencion PASSED      [ 64%]
-tests/test_hechos.py::test_turno_sin_finalizar_se_ignora PASSED          [ 71%]
-tests/test_recomendacion.py::test_ordena_por_menor_espera_y_descarta_pocos_datos PASSED [ 78%]
-tests/test_recomendacion.py::test_si_es_hoy_no_recomienda_franjas_pasadas PASSED [ 85%]
-tests/test_recomendacion.py::test_el_servicio_consulta_por_dia_de_semana_y_tipo_de_dia PASSED [ 92%]
-tests/test_recomendacion.py::test_tipo_de_dia PASSED                     [100%]
+tests/test_api.py::test_salud_responde_sin_token PASSED                  [  2%]
+tests/test_api.py::test_sin_token_de_servicio_responde_401_en_formato_rfc_9457 PASSED [  4%]
+tests/test_api.py::test_con_token_usa_el_servicio_y_devuelve_camel_case PASSED [  6%]
+tests/test_calendario_putumayo.py::test_dia_civico_departamental[fecha0] PASSED [  8%]
+tests/test_calendario_putumayo.py::test_dia_civico_departamental[fecha1] PASSED [ 10%]
+tests/test_calendario_putumayo.py::test_dia_civico_departamental[fecha2] PASSED [ 12%]
+tests/test_calendario_putumayo.py::test_dia_civico_de_mocoa[fecha0] PASSED [ 14%]
+tests/test_calendario_putumayo.py::test_dia_civico_de_mocoa[fecha1] PASSED [ 16%]
+tests/test_calendario_putumayo.py::test_las_declaratorias_son_para_fechas_especificas PASSED [ 18%]
+tests/test_demanda.py::test_mes_pasado_exhibe_historial_anterior_a_la_ventana_de_entrenamiento PASSED [ 20%]
+tests/test_demanda.py::test_pronostica_desde_hoy_y_termina_el_dia_90 PASSED [ 22%]
+tests/test_demanda.py::test_dias_no_habiles_preservan_registros_y_omiten_pronosticos PASSED [ 24%]
+tests/test_demanda.py::test_historial_insuficiente_preserva_conteos_y_marcas PASSED [ 26%]
+tests/test_demanda.py::test_vencimientos_fines_de_semana_y_festivos_nacionales PASSED [ 28%]
+tests/test_demanda.py::test_niveles_distinguen_cero_y_tratan_en_medio_los_empates PASSED [ 30%]
+tests/test_demanda.py::test_agregacion_cuenta_solicitudes_distintas_y_usa_medianoche_bogota PASSED [ 32%]
+tests/test_demanda.py::test_la_fuente_es_simulada_si_la_agencia_tiene_datos_de_demostracion PASSED [ 34%]
+tests/test_demanda.py::test_el_repositorio_reconoce_la_marca_de_origen PASSED [ 36%]
+tests/test_demanda.py::test_api_demanda_valida_token_formatos_y_errores_de_eventos PASSED [ 38%]
+tests/test_estimacion.py::test_aplica_la_formula PASSED                  [ 40%]
+tests/test_estimacion.py::test_un_preferencial_no_espera_por_otros_preferenciales PASSED [ 42%]
+tests/test_estimacion.py::test_p_no_supera_k_sobre_k_mas_uno PASSED      [ 44%]
+tests/test_estimacion.py::test_sin_ventanillas_no_hay_estimacion PASSED  [ 46%]
+tests/test_hechos.py::test_turno_atendido_calcula_espera_y_atencion PASSED [ 48%]
+tests/test_hechos.py::test_turno_cancelado_no_tiene_atencion PASSED      [ 50%]
+tests/test_hechos.py::test_turno_sin_finalizar_se_ignora PASSED          [ 52%]
+tests/test_hechos.py::test_responsable_de_un_turno_finalizado[ATENDIDO-TurnoAtendido-c0000000-0000-4000-8000-000000000002-c0000000-0000-4000-8000-000000000002] PASSED [ 54%]
+tests/test_hechos.py::test_responsable_de_un_turno_finalizado[AUSENTE-TurnoAusente-c0000000-0000-4000-8000-000000000002-c0000000-0000-4000-8000-000000000002] PASSED [ 56%]
+tests/test_hechos.py::test_responsable_de_un_turno_finalizado[AUSENTE-TurnoAusente-None-c0000000-0000-4000-8000-000000000001] PASSED [ 58%]
+tests/test_hechos.py::test_responsable_de_un_turno_finalizado[CANCELADO-TurnoCancelado-d0000000-0000-4000-8000-000000000001-c0000000-0000-4000-8000-000000000001] PASSED [ 60%]
+tests/test_hechos.py::test_pendiente_devuelto_a_la_fila_libera_responsable PASSED [ 62%]
+tests/test_hechos.py::test_cancelado_sin_llamada_se_mantiene_sin_asignacion PASSED [ 64%]
+tests/test_hechos.py::test_atencion_cerrada_por_el_sistema_no_cuenta_su_duracion PASSED [ 66%]
+tests/test_modelo_demanda.py::test_el_modelo_se_equivoca_lo_mismo_que_un_pronostico_perfecto PASSED [ 68%]
+tests/test_modelo_demanda.py::test_aprende_el_efecto_de_los_pagos_de_cada_agencia PASSED [ 70%]
+tests/test_modelo_demanda.py::test_no_depende_del_dia_del_mes PASSED     [ 72%]
+tests/test_modelo_demanda.py::test_sin_historial_suficiente_no_evalua PASSED [ 74%]
+tests/test_recomendacion.py::test_ordena_por_menor_espera_y_descarta_pocos_datos PASSED [ 76%]
+tests/test_recomendacion.py::test_si_es_hoy_no_recomienda_franjas_pasadas PASSED [ 78%]
+tests/test_recomendacion.py::test_el_servicio_consulta_por_dia_de_semana_y_tipo_de_dia PASSED [ 80%]
+tests/test_recomendacion.py::test_tipo_de_dia PASSED                     [ 82%]
+tests/test_simulacion_demo.py::test_simulacion_cierra_en_festivos_y_fines_de_semana[fecha0-tipos0] PASSED [ 84%]
+tests/test_simulacion_demo.py::test_simulacion_cierra_en_festivos_y_fines_de_semana[fecha1-tipos1] PASSED [ 86%]
+tests/test_simulacion_demo.py::test_simulacion_cierra_en_festivos_y_fines_de_semana[fecha2-tipos2] PASSED [ 88%]
+tests/test_simulacion_demo.py::test_simulacion_cierra_en_festivos_y_fines_de_semana[fecha3-tipos3] PASSED [ 90%]
+tests/test_simulacion_demo.py::test_turnos_coherentes_con_los_eventos_y_estables_al_repetir PASSED [ 92%]
+tests/test_simulacion_demo.py::test_pendientes_exigen_horario_real_y_dia_habil PASSED [ 94%]
+tests/test_tablero.py::test_tablero_de_una_agencia_concilia_solicitados_con_el_calendario PASSED [ 96%]
+tests/test_tablero.py::test_tablero_general_suma_agencias_y_marca_las_que_no_respondieron PASSED [ 98%]
+tests/test_tablero.py::test_calendario_general_solo_exige_pronostico_de_agencias_habiles PASSED [100%]
 
 ============================== warnings summary ===============================
 .venv\Lib\site-packages\starlette\testclient.py:40
   D:\ECOTEP\analitica\.venv\Lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
     _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
 
+tests/test_demanda.py::test_la_fuente_es_simulada_si_la_agencia_tiene_datos_de_demostracion
+tests/test_demanda.py::test_la_fuente_es_simulada_si_la_agencia_tiene_datos_de_demostracion
+  D:\ECOTEP\analitica\.venv\Lib\site-packages\sklearn\linear_model\_glm\_newton_solver.py:289: ConvergenceWarning: Line search of Newton solver NewtonCholeskySolver at iteration #1 did no converge after 21 line search refinement iterations. It will now resort to lbfgs instead.
+    warnings.warn(
+
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 14 passed, 1 warning in 0.94s ========================
+======================= 50 passed, 3 warnings in 7.34s ========================
